@@ -1,20 +1,59 @@
 package jpl.ch02.ex10;
 
 public class Vehicle {
-	// 速さ
 	private int Speed;
 	// 角度
 	private int Angle;
 	// 所有者
-	private int Owner;
-	//車のID
+	private String Owner;
+	// 車のID
 	private int Id;
-	//次の車のID
+	// 次の車のID
 	static int NextId;
+
+	Vehicle(String Owner) {
+		this.Owner = Owner;
+	}
+
+	Vehicle() {
+		NextId++;
+	}
+
+	public static int ReturnID() {
+		return NextId;
+	}
 	
 	public String ToString(){
 		String name = Id + " (" + Owner +")";
 		return name;
 		
 	}
+
+	public static void main(String[] args) {
+		Vehicle car = new Vehicle();
+		car.Speed = 50;
+		car.Angle = 20;
+		car.Owner = "Smith";
+		car.Id = 1;
+
+		Vehicle taxi = new Vehicle();
+		taxi.Speed = 40;
+		taxi.Angle = 20;
+		taxi.Owner = "Ibrahimovic";
+		taxi.Id = 2;
+
+		System.out.println(car.Speed);
+		System.out.println(car.Angle);
+		System.out.println(car.Owner);
+		System.out.println(car.Id);
+		System.out.println();
+
+		System.out.println(taxi.Speed);
+		System.out.println(taxi.Angle);
+		System.out.println(taxi.Owner);
+		System.out.println(taxi.Id);
+		
+		System.out.println(car.ToString());
+	}
+
 }

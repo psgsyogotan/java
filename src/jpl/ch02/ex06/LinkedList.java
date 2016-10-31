@@ -4,8 +4,8 @@ import jpl.ch02.ex05.Vehicle;
 
 public class LinkedList {
 
-	private Object Status; // Object型のフィールド
-	private LinkedList next;// リストの次の要素
+	 Object Status; // Object型のフィールド
+	 LinkedList next;// リストの次の要素
 
 	public static void main(String[] args) {
 		Vehicle car = new Vehicle();

@@ -2,13 +2,13 @@ package jpl.ch02.ex03;
 
 public class Vehicle {
 	// 速さ
-	private int Speed;
+	 int Speed;
 	// 角度
-	private int Angle;
+	 int Angle;
 	// 所有者
-	private int Owner;
+	 int Owner;
 	//車のID
-	private int Id;
+	 int Id;
 	//次の車のID
 	static int NextId;
 }
