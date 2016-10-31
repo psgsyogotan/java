@@ -20,6 +20,14 @@ public class LinkedList {
 		
 	}
 
+	public LinkedList getNext() {
+		return next;
+	}
+
+	public void setNext(LinkedList next) {
+		this.next = next;
+	}
+
 	public Object getStatus() {
 		return Status;
 	}
@@ -28,7 +36,7 @@ public class LinkedList {
 		Status = status;
 	}
 	public int numElement(LinkedList list){
-		int num = 0;
+		int num = 1;
 		LinkedList nowlist = list;
 		while(nowlist.next != null){
 			num++;
@@ -41,7 +49,6 @@ public class LinkedList {
 
 /*LinkedListのStatusフィールドは条件によって変わる可能性があるので
  * アクセッサーメソッドはあっても問題ないと思われる。
- * ただし、nextフィールドが安易に変えることが可能だと
- * つながりがなくなるといった整合性の問題があると思うので、
- * アクセッサーメソッドを用意すべきではない
+ * nextフィールドも次につながるものは変更される可能性があるので
+ * 問題ないと思われる
  * */
