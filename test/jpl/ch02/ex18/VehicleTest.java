@@ -3,7 +3,6 @@ package jpl.ch02.ex18;
 import org.junit.Test;
 
 import TestLibrary.StdoutCapture;
-import jpl.ch02.ex05.Vehicle;
 
 public class VehicleTest {
 
@@ -16,8 +15,12 @@ public class VehicleTest {
 		};
 		StdoutCapture sc = new StdoutCapture();
 		sc.start();
-		//コマンドライン引数の自動化は？
-		Vehicle.main(new String[]{"Ibrahimovic"});
+		//コマンドライン引数を使う場合のテストコードの書き方はわからん
+
+		String[] cmd = new String[]{
+				"Ibrahimovic"
+		};
+		jpl.ch02.ex18.Vehicle.main(cmd);
 		
 		sc.stop();
 		sc.assertEquals(expected);

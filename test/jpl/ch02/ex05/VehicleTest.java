@@ -15,7 +15,7 @@ public class VehicleTest {
 				"20",
 				"Smith",
 				"1",
-				//改行文字を認識するコードを書かないとエラーはく
+				"",//ありがとうございます
 				"40",
 				"20",
 				"Ibrahimovic",

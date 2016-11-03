@@ -1,6 +1,7 @@
 package TestLibrary;
 
 /*
+ /*
  * Copyright (C) 2016 Yoshiki Shibata. All rights reserved.
  */
 
@@ -62,8 +63,8 @@ public final class StdoutCapture {
     }
 
     /**
-     * Determines if the captured output equals to the specified argument.
-     * All CR and LF characters are ignored.
+     * Determines if the captured output equals to the specified argument. All
+     * CR and LF characters are ignored.
      *
      * @param expected An array of expected output
      */
@@ -71,26 +72,35 @@ public final class StdoutCapture {
         if (started) {
             throw new IllegalStateException("Has not stopped yet");
         }
-        
+
         String[] trimmedExpected = removeCRLF(expected);
         String[] trimmedResult = removeCRLF(toStringArray(baos.toByteArray()));
-        
+
         try {
-            Assert.assertArrayEquals(trimmedExpected,trimmedResult);
+            Assert.assertArrayEquals(trimmedExpected, trimmedResult);
         } catch (ArrayComparisonFailure e) {
-            System.err.printf("%nResult is%n");
-            for (String s: trimmedResult) 
-                System.err.printf("%s%n", s);
-            
-            System.err.printf("%nBut want is%n");
-            for (String s: trimmedExpected)
-                System.err.printf("%s%n", s);
-            
-            System.err.println();
+            showDifference(trimmedResult, trimmedExpected);
+            throw e;
+        } catch (AssertionError e) {
+            showDifference(trimmedResult, trimmedExpected);
             throw e;
         }
     }
-    
+
+    private void showDifference(String[] trimmedResult, String[] trimmedExpected) {
+        System.err.printf("%nResult is%n");
+        for (String s : trimmedResult) {
+            System.err.printf("%s%n", s);
+        }
+
+        System.err.printf("%nBut want is%n");
+        for (String s : trimmedExpected) {
+            System.err.printf("%s%n", s);
+        }
+
+        System.err.println();
+    }
+
     private String[] toStringArray(byte[] bytes) {
         try {
             String out = new String(bytes, "UTF-8");
@@ -106,6 +116,10 @@ public final class StdoutCapture {
 
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
+            if (line.isEmpty()) {
+                result[i] = line;
+                continue;
+            }
             char lastChar = line.charAt(line.length() - 1);
             while (lastChar == '\n' || lastChar == '\r') {
                 line = line.substring(0, line.length() - 1);
