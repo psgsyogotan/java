@@ -1,4 +1,4 @@
-package jpl.ch02.ex18;
+package jpl.ch03.ex06;
 
 public class Vehicle {
 	final static int TURN_LEFT = 90;
@@ -12,14 +12,29 @@ public class Vehicle {
 	private int Id;
 	// 次の車のID
 	static int NextId;
+	private int fuel;
 
-	protected Vehicle(String Owner){
+	protected Vehicle(String Owner) {
 		this.Owner = Owner;
 	}
-	protected Vehicle(){
+
+	protected Vehicle() {
 		NextId++;
 	}
+
+	protected Vehicle(EnergySorce energy) {
+			fuel = 0;
+	}
+
+	void start(GasTank gas) {
+		gas.setGas(5);
 	
+	}
+	
+	void start(Battery battery){
+		battery.setElectricity(5);
+	}
+
 	public int getSpeed() {
 		return Speed;
 	}
@@ -67,16 +82,10 @@ public class Vehicle {
 	public void turn(int Angle) {
 		if (Angle == TURN_LEFT) {
 			setAngle((int) TURN_LEFT);
-		} 
-		else if (Angle == TURN_RIGHT) {
+		} else if (Angle == TURN_RIGHT) {
 			setAngle((int) TURN_RIGHT);
 		}
 
-	}
-	public static void main(String []args){
-		Vehicle car = new Vehicle(args[0]);
-		System.out.println("car's owner is "+ car.getOwner());
-		
 	}
 
 }

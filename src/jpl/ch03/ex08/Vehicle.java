@@ -1,6 +1,7 @@
-package jpl.ch02.ex18;
+package jpl.ch03.ex08;
 
-public class Vehicle {
+
+public class Vehicle implements Cloneable {
 	final static int TURN_LEFT = 90;
 	final static int TURN_RIGHT = -90;
 	private int Speed;
@@ -13,13 +14,14 @@ public class Vehicle {
 	// 次の車のID
 	static int NextId;
 
-	protected Vehicle(String Owner){
+	protected Vehicle(String Owner) {
 		this.Owner = Owner;
 	}
-	protected Vehicle(){
+
+	protected Vehicle() {
 		NextId++;
 	}
-	
+
 	public int getSpeed() {
 		return Speed;
 	}
@@ -67,16 +69,16 @@ public class Vehicle {
 	public void turn(int Angle) {
 		if (Angle == TURN_LEFT) {
 			setAngle((int) TURN_LEFT);
-		} 
-		else if (Angle == TURN_RIGHT) {
+		} else if (Angle == TURN_RIGHT) {
 			setAngle((int) TURN_RIGHT);
 		}
 
 	}
-	public static void main(String []args){
-		Vehicle car = new Vehicle(args[0]);
-		System.out.println("car's owner is "+ car.getOwner());
-		
+	
+	public Vehicle Clone() throws CloneNotSupportedException{
+		return (Vehicle)this.clone();
 	}
 
 }
+//4つの選択して言うと一番上
+//Object.Cloneによる単純なコピーは今回の場合は正しい。
