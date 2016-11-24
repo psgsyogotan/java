@@ -1,7 +1,5 @@
 package jpl.ch03.ex10;
 
-import static org.hamcrest.CoreMatchers.*;
-
 public class LinkedList implements Cloneable {
 	private Object Status; // Object型のフィールド
 	private LinkedList next;// リストの次の要素
@@ -44,19 +42,7 @@ public class LinkedList implements Cloneable {
 		return  num;
 	}
 	
-	public LinkedList clone(){
-		try {
-			LinkedList nObj = this;
-			nObj.
-			
-				
-			return nObj;
-		} catch (CloneNotSupportedException e) {
-			// TODO 自動生成された catch ブロック
-			throw new InternalError(e.toString());
-		}
-		
-		
-	}
+	//以下、未実装
+	
 
 }
