@@ -4,18 +4,7 @@ public class LinkedList implements Cloneable {
 	private Object Status; // Object型のフィールド
 	private LinkedList next;// リストの次の要素
 
-	public static void main(String[] args) {
-		Vehicle car = new Vehicle();
-		Vehicle taxi = new Vehicle();
-		
-		LinkedList list1 = new LinkedList();
-		LinkedList list2 = new LinkedList();
-		
-		list1.Status = car;
-		list2.Status = taxi;
-		list1.next = list2;
-		
-	}
+
 
 	public LinkedList getNext() {
 		return next;
@@ -32,17 +21,28 @@ public class LinkedList implements Cloneable {
 	public void setStatus(Object status) {
 		Status = status;
 	}
-	public int numElement(LinkedList list){
+
+	public int numElement(LinkedList list) {
 		int num = 1;
 		LinkedList nowlist = list;
-		while(nowlist.next != null){
+		while (nowlist.next != null) {
 			num++;
 			nowlist = list.next;
 		}
-		return  num;
+		return num;
 	}
-	
-	//以下、未実装
-	
+
+	public Object Clone() {
+		try {
+			LinkedList list = (LinkedList) super.clone();
+			if (next != null) {
+				list.next = (LinkedList) next.clone();
+			}
+			return list;
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError(e.toString());
+		}
+	}
+	// 以下、未実装
 
 }
