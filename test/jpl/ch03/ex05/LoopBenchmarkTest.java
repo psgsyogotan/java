@@ -9,7 +9,7 @@ public class LoopBenchmarkTest {
 	@Test
 	public void test() {
 		LoopBenchmark benchmark = new LoopBenchmark();
-		assertEquals(28５,benchmark.loopBenchmark(5));
+		assertEquals(285,benchmark.loopBenchmark(5));
 				
 	}
 
