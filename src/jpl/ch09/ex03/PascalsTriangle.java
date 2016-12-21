@@ -1,5 +1,4 @@
-package jpl.ch07.ex03;
-
+package jpl.ch09.ex03;
 
 public class PascalsTriangle {
 
