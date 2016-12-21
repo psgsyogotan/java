@@ -17,7 +17,7 @@ public class PascalsTriangle {
 
 	public void showpascal() {
 
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < triangle.length; i++) {
 			for (int j = 0; j <= i; j++) {
 				if(j ==0 || j - i == 0){
 					triangle[i][j] = 1;
