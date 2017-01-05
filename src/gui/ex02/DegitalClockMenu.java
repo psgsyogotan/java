@@ -17,15 +17,15 @@ public class DegitalClockMenu extends Frame implements ActionListener {
 		Menu mn1 = new Menu("ファイル");
 		MenuItem close = new MenuItem("閉じる");
 		MenuItem property = new MenuItem("プロパティ");
-		MenuItem nazobeme = new MenuItem("ナゾベーム");
+		// MenuItem nazobeme = new MenuItem("ナゾベーム");
 
 		mb.add(mn1);
 
 		mn1.add(close);
 		mn1.add(property);
-		mn1.add(nazobeme);
+		// mn1.add(nazobeme);
 		property.addActionListener(this);
-		nazobeme.addActionListener(this);
+		// nazobeme.addActionListener(this);
 		close.addActionListener(this);
 
 	}
