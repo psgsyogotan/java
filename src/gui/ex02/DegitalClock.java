@@ -12,27 +12,26 @@ import java.util.Calendar;
 import gui.ex01.MyWindowsAdapter;
 
 public class DegitalClock extends Frame implements Runnable {
-	//時刻
+	// 時刻
 	int hour;
 	int minute;
 	int second;
 
-	//フレームの大きさは時刻の文字列と下の倍率の積で計算
+	// フレームの大きさは時刻の文字列と下の倍率の積で計算
 	int xframemag = 15;
 	int yframemag = 10;
 
-	//時刻の文字列情報
+	// 時刻の文字列情報
 	static int mojisize = 40;
 	static String mojicolor = "black";
 	static String color = "white";
 	static String mojifont = "serif";
-	
-	//画面の大きさ変更フラグ
+
+	// 画面の大きさ変更フラグ
 	static boolean frameflag = false;
 
-
 	public DegitalClock() {
-		setSize(mojisize * xframemag , mojisize * yframemag);
+		setSize(mojisize * xframemag, mojisize * yframemag);
 		addWindowListener(new MyWindowsAdapter());
 		DegitalClockMenu dcm = new DegitalClockMenu();
 		setMenuBar(dcm.mb);
@@ -47,12 +46,12 @@ public class DegitalClock extends Frame implements Runnable {
 			hour = calendar.get(Calendar.HOUR);
 			minute = calendar.get(Calendar.MINUTE);
 			second = calendar.get(Calendar.SECOND);
-			
-			if(frameflag){
+
+			if (frameflag) {
 				frameflag = false;
-				setSize(mojisize * xframemag , mojisize * yframemag);
+				setSize(mojisize * xframemag, mojisize * yframemag);
 			}
-			
+
 			repaint();
 			try {
 				Thread.sleep(10);
@@ -60,7 +59,6 @@ public class DegitalClock extends Frame implements Runnable {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-
 
 		}
 
@@ -70,8 +68,8 @@ public class DegitalClock extends Frame implements Runnable {
 		String text = hour + ":" + minute + ":" + second;
 		int x = this.getSize().width;
 		int y = this.getSize().height;
-		
-		Image imgBuf = createImage(mojisize * xframemag * 10 , mojisize * yframemag * 10);
+
+		Image imgBuf = createImage(mojisize * xframemag * 10, mojisize * yframemag * 10);
 		Graphics gBuf = imgBuf.getGraphics();
 		Font font = new Font(mojifont, Font.BOLD, mojisize);
 		gBuf.setFont(font);
@@ -90,22 +88,19 @@ public class DegitalClock extends Frame implements Runnable {
 			gBuf.setColor(Color.white);
 		else if (color.equals("black"))
 			gBuf.setColor(Color.BLACK);
-		
+
 		gBuf.drawString(text, mojix, mojiy);
 
-		g.drawImage(imgBuf,0,0,this);
-		
+		g.drawImage(imgBuf, 0, 0, this);
 
-		/*if (color.equals("white"))
+		if (color.equals("white"))
 			setBackground(Color.white);
 		else if (color.equals("black"))
 			setBackground(Color.BLACK);
-			*/
-
 
 	}
-	
-	public void update(Graphics g){
+
+	public void update(Graphics g) {
 		paint(g);
 	}
 
