@@ -29,8 +29,7 @@ public class DegitalClock extends Frame implements Runnable {
 	
 	//画面の大きさ変更フラグ
 	static boolean frameflag = false;
-	//ナゾベームフラグ
-	static boolean nazobemeflag = false;
+
 
 	public DegitalClock() {
 		setSize(mojisize * xframemag , mojisize * yframemag);
@@ -87,21 +86,22 @@ public class DegitalClock extends Frame implements Runnable {
 		else if (mojicolor == "white") {
 			gBuf.setColor(Color.WHITE);
 		}
+		if (color.equals("white"))
+			gBuf.setColor(Color.white);
+		else if (color.equals("black"))
+			gBuf.setColor(Color.BLACK);
 		
 		gBuf.drawString(text, mojix, mojiy);
 
 		g.drawImage(imgBuf,0,0,this);
 		
 
-		if (color.equals("white"))
+		/*if (color.equals("white"))
 			setBackground(Color.white);
 		else if (color.equals("black"))
 			setBackground(Color.BLACK);
+			*/
 
-		if (nazobemeflag) {
-			Image pi = getToolkit().getImage(getClass().getResource("image.png"));
-			g.drawImage(pi, 0, 0, this);
-		}
 
 	}
 	

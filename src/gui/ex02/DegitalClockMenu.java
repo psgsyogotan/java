@@ -37,11 +37,6 @@ public class DegitalClockMenu extends Frame implements ActionListener {
 			Dialog dig = null;
 			DegitalClockDialog dialog = new DegitalClockDialog(dig);
 			dialog.show();
-		} else if (e.getActionCommand() == "ナゾベーム") {
-			if (DegitalClock.nazobemeflag == true)
-				DegitalClock.nazobemeflag = false;
-			else
-				DegitalClock.nazobemeflag = true;
 		}
 
 	}
