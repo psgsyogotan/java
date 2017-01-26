@@ -3,7 +3,6 @@ package gui.ex03;
 import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,9 +11,9 @@ import java.awt.event.MouseEvent;
 public class ClockMenu extends MouseAdapter implements ActionListener {
 
 	PopupMenu popupmenu;
-	Window window;
+	DegitalClock window;
 
-	public ClockMenu(Window window) {
+	public ClockMenu(DegitalClock window) {
 		this.window = window;
 		popupmenu = new PopupMenu();
 		window.add(popupmenu);
@@ -22,7 +21,7 @@ public class ClockMenu extends MouseAdapter implements ActionListener {
 		// 文字サイズのメニュー
 		Menu sizemenu = new Menu("文字サイズ");
 		MenuItem sizeitem1 = new MenuItem("30");
-		MenuItem sizeitem2 = new MenuItem("50");
+		MenuItem sizeitem2 = new MenuItem("40");
 		popupmenu.add(sizemenu);
 		sizemenu.add(sizeitem1);
 		sizemenu.add(sizeitem2);
@@ -41,8 +40,8 @@ public class ClockMenu extends MouseAdapter implements ActionListener {
 
 		// 文字色のメニュー
 		Menu colormenu = new Menu("文字色");
-		MenuItem coloritem1 = new MenuItem("white");
-		MenuItem coloritem2 = new MenuItem("black");
+		MenuItem coloritem1 = new MenuItem("White");
+		MenuItem coloritem2 = new MenuItem("Black");
 		popupmenu.add(colormenu);
 		colormenu.add(coloritem1);
 		colormenu.add(coloritem2);
@@ -58,12 +57,11 @@ public class ClockMenu extends MouseAdapter implements ActionListener {
 		backcolormenu.add(backcoloritem2);
 		backcoloritem1.addActionListener(this);
 		backcoloritem2.addActionListener(this);
-		
+
 		MenuItem end = new MenuItem("終了");
 		popupmenu.add(end);
-		
 
-		popupmenu.addActionListener(this);	
+		popupmenu.addActionListener(this);
 		window.addMouseListener(this);
 	}
 
@@ -76,10 +74,35 @@ public class ClockMenu extends MouseAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand()== "終了"){
+		switch(e.getActionCommand()){
+		
+		case  "終了":
 			System.exit(0);
-			;
-	
+			break;
+		case "30":
+			window.mojisize = 30;
+			break;
+		case "40":
+			window.mojisize = 40;
+			break;
+		case "serif":
+			window.mojifont = "serif";
+			break;
+		case "sans-serif":
+			window.mojifont = "sans-serif";
+			break;
+		case "White":
+			window.mojicolor = "white";
+			break;
+		case "Black":
+			window.mojicolor = "black";
+			break;
+		case "white":
+			window.color = "white";
+			break;
+		case "black":
+			window.color = "black";
+			break;
 		}
 		// TODO 自動生成されたメソッド・スタブ
 

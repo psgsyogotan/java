@@ -84,10 +84,7 @@ public class DegitalClock extends Frame implements Runnable {
 		else if (mojicolor == "white") {
 			gBuf.setColor(Color.WHITE);
 		}
-		if (color.equals("white"))
-			gBuf.setColor(Color.white);
-		else if (color.equals("black"))
-			gBuf.setColor(Color.BLACK);
+		
 
 		gBuf.drawString(text, mojix, mojiy);
 

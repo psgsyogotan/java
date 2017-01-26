@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.util.Calendar;
 
-public class DegitalClock extends Window implements Runnable {
+public class DegitalClock extends Window implements Runnable{
 	// 時刻
 	int hour;
 	int minute;
@@ -22,17 +22,18 @@ public class DegitalClock extends Window implements Runnable {
 
 	int xframemag = 15;
 	int yframemag = 10;
+	
+	int abstX;
+	int abstY;
 
-	Window window;
 
 	public DegitalClock() {
 		super(null);
+		setSize(300, 300);
+		setVisible(true);
 
-		window = new Window(null);
-		window.setSize(300, 300);
-		window.setVisible(true);
-
-		ClockMenu clockmenu = new ClockMenu(window);
+		ClockMenu clockmenu = new ClockMenu(this);
+		MyMouseAdapter mma = new MyMouseAdapter(this);
 
 	}
 
@@ -57,9 +58,10 @@ public class DegitalClock extends Window implements Runnable {
 
 	public void paint(Graphics g) {
 		String text = hour + ":" + minute + ":" + second;
-		int x = window.getSize().width;
-		int y = window.getSize().height;
+		int x = this.getSize().width;
+		int y = this.getSize().height;
 
+		this.setSize(mojisize * xframemag, mojisize * yframemag);
 		Image imgBuf = createImage(mojisize * xframemag * 10, mojisize * yframemag * 10);
 		Graphics gBuf = imgBuf.getGraphics();
 		Font font = new Font(mojifont, Font.BOLD, mojisize);
@@ -70,29 +72,24 @@ public class DegitalClock extends Window implements Runnable {
 		int mojix = (x - rectText.width) / 2;
 		int mojiy = (y - rectText.height) / 2 + fm.getMaxAscent();
 
-		if (mojicolor == "black")
+		if (mojicolor.equals("black"))
 			gBuf.setColor(Color.black);
-		else if (mojicolor == "white") {
+		else if (mojicolor.equals("white")) {
 			gBuf.setColor(Color.WHITE);
 		}
-		if (color.equals("white"))
-			gBuf.setColor(Color.white);
-		else if (color.equals("black"))
-			gBuf.setColor(Color.BLACK);
+	
 
 		gBuf.drawString(text, mojix, mojiy);
 
-		g.drawImage(imgBuf, 0, 0, window);
+		g.drawImage(imgBuf, 0, 0, this);
 
-		/*
-		 * if (color.equals("white")) setBackground(Color.white); else if
-		 * (color.equals("black")) setBackground(Color.BLACK);
-		 */
+		if (color.equals("white"))
+			setBackground(Color.white);
+		else if (color.equals("black"))
+			setBackground(Color.BLACK);
 
 	}
 
-	public void update(Graphics g) {
-		paint(g);
-	}
+	
 
 }
