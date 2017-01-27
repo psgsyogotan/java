@@ -22,10 +22,7 @@ public class DegitalClock extends Window implements Runnable {
 
 	int xframemag = 15;
 	int yframemag = 10;
-
-	int abstX;
-	int abstY;
-
+	
 	public DegitalClock() {
 		super(null);
 		setSize(300, 300);
@@ -45,7 +42,7 @@ public class DegitalClock extends Window implements Runnable {
 
 			repaint();
 			try {
-				Thread.sleep(1);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();

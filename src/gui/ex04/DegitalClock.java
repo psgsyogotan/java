@@ -1,4 +1,4 @@
-package gui.ex02;
+package gui.ex04;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,39 +7,47 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Calendar;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
-import gui.ex01.MyWindowsAdapter;
+import gui.ex03.MyMouseAdapter;
 
-public class DegitalClock extends Frame implements Runnable {
-	// 時刻
+public class DegitalClock extends Frame implements Runnable{
 	int hour;
 	int minute;
 	int second;
 
-	// フレームの大きさは時刻の文字列と下の倍率の積で計算
-	int xframemag = 15;
-	int yframemag = 10;
+	int mojisize = 40;
+	String mojicolor = "black";
+	String color = "white";
+	String mojifont = "serif";
 
-	// 時刻の文字列情報
-	static int mojisize = 40;
-	static String mojicolor = "black";
-	static String color = "white";
-	static String mojifont = "serif";
-
-	// 画面の大きさ変更フラグ
-	static boolean frameflag = false;
+	int xframemag = 6;
+	int yframemag = 4;
+	
+	private Preferences prefs = Preferences.userNodeForPackage(this.getClass());;
 
 	public DegitalClock() {
-		setSize(mojisize * xframemag, mojisize * yframemag);
-		addWindowListener(new MyWindowsAdapter());
-		DegitalClockMenu dcm = new DegitalClockMenu();
-		setMenuBar(dcm.mb);
+		super();	
+		mojisize = prefs.getInt("mojisize", 40);
+		mojifont = prefs.get("mojifont", "serif");
+		mojicolor = prefs.get("mojicolor", "black");
+		color= prefs.get("mojisize", "white");
+		
+		setSize(300, 300);
 		setVisible(true);
+		setResizable(false);
+		addWindowListener(new MyWindowsAdapter());
+
+		DegitalClockMenu clockmenu = new DegitalClockMenu(this);
+		MyMouseAdapter mma = new MyMouseAdapter(this);
+		
 
 	}
 
-	@Override
 	public void run() {
 		while (true) {
 			Calendar calendar = Calendar.getInstance();
@@ -47,19 +55,13 @@ public class DegitalClock extends Frame implements Runnable {
 			minute = calendar.get(Calendar.MINUTE);
 			second = calendar.get(Calendar.SECOND);
 
-			if (frameflag) {
-				frameflag = false;
-				setSize(mojisize * xframemag, mojisize * yframemag);
-			}
-
 			repaint();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-
 		}
 
 	}
@@ -73,7 +75,7 @@ public class DegitalClock extends Frame implements Runnable {
 		int imagey = mojisize * yframemag * 10;
 
 		this.setSize(mojisize * xframemag, mojisize * yframemag);
-		Image imgBuf = createImage(mojisize * xframemag * 10, mojisize * yframemag * 10);
+		Image imgBuf = createImage(imagex, imagey);
 		Graphics gBuf = imgBuf.getGraphics();
 		Font font = new Font(mojifont, Font.BOLD, mojisize);
 		gBuf.setFont(font);
@@ -81,7 +83,7 @@ public class DegitalClock extends Frame implements Runnable {
 		Rectangle rectText = fm.getStringBounds(text, gBuf).getBounds();
 
 		int mojix = (x - rectText.width) / 2;
-		int mojiy = (y - rectText.height) / 2 + fm.getMaxAscent();
+		int mojiy = (y - rectText.height) / 2 + fm.getMaxAscent() + 10;
 
 		if (color.equals("white"))
 			gBuf.setColor(Color.white);
@@ -103,5 +105,26 @@ public class DegitalClock extends Frame implements Runnable {
 	public void update(Graphics g) {
 		paint(g);
 	}
+	
+	public class MyWindowsAdapter extends WindowAdapter {
+		public void windowClosing(WindowEvent e){
+			
+			prefs.put("mojicolor", mojicolor);
+			prefs.put("mojifont", mojifont);
+			prefs.put("color", color);
+			prefs.putInt("mojisize", mojisize);
+			try {
+				prefs.flush();
+			} catch (BackingStoreException e1) {
+				// TODO 自動生成された catch ブロック
+				e1.printStackTrace();
+			}
+			System.exit(0);
+		}
+		
+
+	}
+
+
 
 }
