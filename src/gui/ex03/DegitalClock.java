@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.util.Calendar;
 
-public class DegitalClock extends Window implements Runnable{
+public class DegitalClock extends Window implements Runnable {
 	// 時刻
 	int hour;
 	int minute;
@@ -22,10 +22,9 @@ public class DegitalClock extends Window implements Runnable{
 
 	int xframemag = 15;
 	int yframemag = 10;
-	
+
 	int abstX;
 	int abstY;
-
 
 	public DegitalClock() {
 		super(null);
@@ -46,7 +45,7 @@ public class DegitalClock extends Window implements Runnable{
 
 			repaint();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -61,6 +60,9 @@ public class DegitalClock extends Window implements Runnable{
 		int x = this.getSize().width;
 		int y = this.getSize().height;
 
+		int imagex = mojisize * xframemag * 10;
+		int imagey = mojisize * yframemag * 10;
+
 		this.setSize(mojisize * xframemag, mojisize * yframemag);
 		Image imgBuf = createImage(mojisize * xframemag * 10, mojisize * yframemag * 10);
 		Graphics gBuf = imgBuf.getGraphics();
@@ -72,24 +74,25 @@ public class DegitalClock extends Window implements Runnable{
 		int mojix = (x - rectText.width) / 2;
 		int mojiy = (y - rectText.height) / 2 + fm.getMaxAscent();
 
+		if (color.equals("white"))
+			gBuf.setColor(Color.white);
+		else if (color.equals("black"))
+			gBuf.setColor(Color.black);
+		gBuf.fillRect(0, 0, imagex, imagey);
+
 		if (mojicolor.equals("black"))
 			gBuf.setColor(Color.black);
 		else if (mojicolor.equals("white")) {
 			gBuf.setColor(Color.WHITE);
 		}
-	
-
 		gBuf.drawString(text, mojix, mojiy);
 
 		g.drawImage(imgBuf, 0, 0, this);
 
-		if (color.equals("white"))
-			setBackground(Color.white);
-		else if (color.equals("black"))
-			setBackground(Color.BLACK);
-
 	}
 
-	
+	public void update(Graphics g) {
+		paint(g);
+	}
 
 }
