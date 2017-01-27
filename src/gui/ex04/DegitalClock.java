@@ -27,24 +27,31 @@ public class DegitalClock extends Frame implements Runnable{
 
 	int xframemag = 6;
 	int yframemag = 4;
-	
+
+	int startposx;
+	int startposy;
+
 	private Preferences prefs = Preferences.userNodeForPackage(this.getClass());;
 
 	public DegitalClock() {
-		super();	
+		super();
 		mojisize = prefs.getInt("mojisize", 40);
 		mojifont = prefs.get("mojifont", "serif");
 		mojicolor = prefs.get("mojicolor", "black");
 		color= prefs.get("mojisize", "white");
-		
+		startposx = prefs.getInt("framex", 0);
+		startposy = prefs.getInt("framey", 0);
+
+
 		setSize(300, 300);
+		setLocation(startposx, startposy);
 		setVisible(true);
 		setResizable(false);
 		addWindowListener(new MyWindowsAdapter());
 
 		DegitalClockMenu clockmenu = new DegitalClockMenu(this);
 		MyMouseAdapter mma = new MyMouseAdapter(this);
-		
+
 
 	}
 
@@ -100,19 +107,25 @@ public class DegitalClock extends Frame implements Runnable{
 
 		g.drawImage(imgBuf, 0, 0, this);
 
+		startposx = this.getX();
+		startposy = this.getY();
+
+
 	}
 
 	public void update(Graphics g) {
 		paint(g);
 	}
-	
+
 	public class MyWindowsAdapter extends WindowAdapter {
 		public void windowClosing(WindowEvent e){
-			
+
 			prefs.put("mojicolor", mojicolor);
 			prefs.put("mojifont", mojifont);
 			prefs.put("color", color);
 			prefs.putInt("mojisize", mojisize);
+			prefs.putInt("framex", startposx);
+			prefs.putInt("framey", startposy);
 			try {
 				prefs.flush();
 			} catch (BackingStoreException e1) {
@@ -121,7 +134,7 @@ public class DegitalClock extends Frame implements Runnable{
 			}
 			System.exit(0);
 		}
-		
+
 
 	}
 
