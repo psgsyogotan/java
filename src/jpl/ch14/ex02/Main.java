@@ -7,8 +7,6 @@ public class Main {
 		Thread thread = new Thread(improvePrintServer,"runnable");
 		thread.start();
 		
-		Thread thread1 = new Thread(improvePrintServer,"runnable");
-		thread1.start();
 
 	}
 
