@@ -3,7 +3,7 @@ package jpl.ch05.ex01;
 public class WhichNest {
 
 }
-//AttributedインタフェースがAttrクラスのネストした型であるべき
-//
-//Attributedインタフェースの提供するメソッドはAttrクラスの契約と関連しているので
-//
+//AttributeインタフェースがAttrのネストした型であるべき
+
+//理由：Attrのprivateなフィールドを利用することを考えたとき、内部インタフェースの実装をつくることで、
+//Attrクラスの外側に向けてAttrのフィールドを公開することなくAttrkクラスとやり取りできることが便利だと思ったので
