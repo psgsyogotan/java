@@ -10,13 +10,14 @@ public class MainTest {
 	public void test() {
 		String[] expected = new String[] {
 				"ThreadGroup is No1",
-				"Parent is main",
+				"Parent ThreadGroup is main",
 				"Thread is ex01",
 				"Thread is ex02",
 				"Thread is ex03",
+				"Child ThreadGroup is No2",
 				"",
 				"ThreadGroup is No2",
-				"Parent is No1",
+				"Parent ThreadGroup is No1",
 				"Thread is ex03"
 
 		};

@@ -16,16 +16,19 @@ public class ShowThread implements Runnable {
 		System.out.println("ThreadGroup is " +threadGroup.getName());
 		
 		if(threadGroup.getParent() != null)
-			System.out.println("Parent is "+threadGroup.getParent().getName());
+			System.out.println("Parent ThreadGroup is "+threadGroup.getParent().getName());
 		
-		Thread[] thread = new Thread[5];
-		threadGroup.enumerate(thread);
-		int i = 0;
-		while (thread[i] != null) {
+		Thread[] thread = new Thread[100];
+		int threadCount = threadGroup.enumerate(thread);
+		for(int i = 0; i < threadCount; i++) {
 			System.out.println("Thread is " +thread[i].getName());
-			i++;
-			if(i == 5)
-				break;
+		
+		}
+		
+		ThreadGroup[] childThreadGroup = new ThreadGroup[100];
+		int threadGroupCount = threadGroup.enumerate(childThreadGroup);
+		for(int i = 0; i < threadGroupCount; i++)  {
+			System.out.println("Child ThreadGroup is " +childThreadGroup[i].getName());
 
 		}
 		System.out.println("");
