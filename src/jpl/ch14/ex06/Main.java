@@ -1,15 +1,19 @@
 package jpl.ch14.ex06;
 
-
-
 public class Main {
-	public static void main(String[] args){
-	ShowMessagePer15s showMessagePer15s = new ShowMessagePer15s();
-	Thread thFor15s = new Thread(showMessagePer15s);
-	Time time = new Time(showMessagePer15s);
-	Thread thread = new Thread(time);
-	
-	thread.start();
+
+	public static void main(String[] args) {
+		Message message = new Message();
+		ShowTime st = new ShowTime(message);
+		ShowMessage15 sm15 = new ShowMessage15(message);
+		ShowMessage7 sm7 = new ShowMessage7(message);
+		Thread thread = new Thread(st);
+		Thread thread1 = new Thread(sm15);
+		Thread threas2 = new Thread(sm7);
+		thread.start();
+		thread1.start();
+		threas2.start();
+
 	}
 
 }
