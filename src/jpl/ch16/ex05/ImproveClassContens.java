@@ -1,14 +1,15 @@
-package jpl.ch16.ex03;
+package jpl.ch16.ex05;
+
 import java.lang.reflect.Member;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ClassContens {
+public class ImproveClassContens extends jpl.ch16.ex03.ClassContens {
 
 	public static void main(String[] args) {
 		try{
 			Class<?> c = Class.forName(args[0]);
-			System.out.println(c);	
+			System.out.println(c);
 			printMembersDelRepeat(c.getDeclaredFields(),c.getFields());
 			System.out.println();
 			printMembersDelRepeat(c.getDeclaredConstructors(), c.getConstructors());
@@ -30,17 +31,17 @@ public class ClassContens {
 	}
 	private static void printMembersDelRepeat(Member[] mems, Member[] rawmems){
 		Boolean flag = false;
-		
+
 		printMembers(rawmems);
 		System.out.println();
-		
+
 		for(int i = 0; i < mems.length; i++){
 			if(mems[i].getDeclaringClass() == Object.class)
 				continue;
 			for(int j = 0; j < rawmems.length; j++){
 				if(mems[i].getName().equals(rawmems[j].getName()))
 					flag = true;
-				
+
 			}
 			if(!flag){
 			String decl = mems[i].toString();
@@ -58,4 +59,5 @@ public class ClassContens {
 		return strtmp;
 
 	}
+
 }
