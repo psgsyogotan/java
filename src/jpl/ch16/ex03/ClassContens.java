@@ -35,15 +35,11 @@ public class ClassContens {
 	}
 	private static void printMembers1(Member[] mems, Member[] delmems){
 		for(int i = 0; i < mems.length; i++){
-			if(mems[i].getDeclaringClass() == Object.class)
-				continue;
+		//	if(mems[i].getDeclaringClass() == Object.class)
+			//	continue;
 			for(int j = 0; j < delmems.length; j++){
-				String str1 = mems[i].getName();
-				String str2 = delmems[j].getName();
-
-				if(true){
+				if(mems[i].getName().equals(delmems[j].getName()))
 					continue;
-				}
 			}
 			String decl = mems[i].toString();
 			System.out.print(" ");
