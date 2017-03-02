@@ -1,4 +1,4 @@
-package jpl.cn16.ex01;
+package jpl.ch16.ex01;
 
 import org.junit.Test;
 

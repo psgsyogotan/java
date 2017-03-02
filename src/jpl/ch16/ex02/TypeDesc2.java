@@ -29,6 +29,8 @@ public class TypeDesc2 {
 	private void printType(Type type, int depth, String[] labels) {
 		if (type == null)
 			return;
+		if(type.equals(Object.class))
+			return;
 
 		Class<?> cls = null;
 		if (type instanceof Class<?>)
@@ -45,7 +47,7 @@ public class TypeDesc2 {
 		out.print(labels[kind] + " ");
 		out.print(cls.getCanonicalName());
 		if(cls.isMemberClass()){
-			out.println("is nest class.");
+			out.println(" is nest class.");
 			out.print("Enclosing class is "+cls.getEnclosingClass());
 		}
 	
