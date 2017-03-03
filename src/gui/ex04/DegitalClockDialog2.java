@@ -36,7 +36,7 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 		setLayout(grid);
 
 		setTitle("プロパティ");
-		setSize(200, 150);
+		setSize(300, 150);
 		setResizable(false);
 	
 		addWindowListener(new MyWindowsListenerForDialog());
@@ -123,7 +123,7 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 	void addComponent(Component com, int x, int y, int w, int h) {
 		GridBagConstraints gridcom = new GridBagConstraints();
 		gridcom.anchor = GridBagConstraints.WEST;
-	
+		gridcom.fill = GridBagConstraints.BOTH;
 		gridcom.gridx = x;
 		gridcom.gridy = y;
 		gridcom.gridwidth = w;
