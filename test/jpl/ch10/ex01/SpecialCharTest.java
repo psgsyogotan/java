@@ -1,24 +1,20 @@
 package jpl.ch10.ex01;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
-import TestLibrary.StdoutCapture;
+import org.junit.Test;
 
 public class SpecialCharTest {
 
 	@Test
-	public void test() {
-		String[] expected = new String[] {
-							"AB\\\'C",
-
-		};
-		StdoutCapture sc = new StdoutCapture();
-		sc.start();
-
-		jpl.ch10.ex01.Main.main(new String[0]);
-
-		sc.stop();
-		sc.assertEquals(expected);
+	public void test1() {
+		SpecialChar test = new SpecialChar();
+		assertEquals("AB\\\'C",test.returnstring("AB\'C"));
+	}
+	@Test
+	public void test2() {
+		SpecialChar test = new SpecialChar();
+		assertEquals("AB\\\"C",test.returnstring("AB\"C"));
 	}
 
 }

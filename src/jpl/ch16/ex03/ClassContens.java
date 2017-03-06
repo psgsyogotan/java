@@ -35,12 +35,12 @@ public class ClassContens {
 		System.out.println();
 		
 		for(int i = 0; i < mems.length; i++){
+
 			if(mems[i].getDeclaringClass() == Object.class)
 				continue;
 			for(int j = 0; j < rawmems.length; j++){
 				if(mems[i].getName().equals(rawmems[j].getName()))
 					flag = true;
-				
 			}
 			if(!flag){
 			String decl = mems[i].toString();
