@@ -31,7 +31,7 @@ public class InterpretGUI extends Frame implements ActionListener {
 	java.awt.List instanceList;
 	TextField inputValueToInstance;
 	Button selectInstanceButton;
-	
+
 	Label arrayListLabel;
 	java.awt.List arrayList;
 	TextField inputValueToArray;
@@ -39,6 +39,9 @@ public class InterpretGUI extends Frame implements ActionListener {
 
 	Constructor[] constructors;
 	ArrayList<String> getconstructorName;
+
+	Class<?> c;
+	Object instance;
 
 	public InterpretGUI() {
 
@@ -129,13 +132,12 @@ public class InterpretGUI extends Frame implements ActionListener {
 		instanceList.setBounds(550, 75, 200, 100);
 		instanceList.setVisible(false);
 		add(instanceList);
-		
+
 		inputValueToInstance = new TextField();
 		inputValueToInstance.setBounds(550, 180, 150, 25);
 		inputValueToInstance.setVisible(false);
 		add(inputValueToInstance);
 
-		
 		selectInstanceButton = new Button("Input");
 		selectInstanceButton.setBounds(700, 180, 50, 25);
 		selectInstanceButton.addActionListener(this);
@@ -143,8 +145,8 @@ public class InterpretGUI extends Frame implements ActionListener {
 		add(selectInstanceButton);
 
 	}
-	
-	private void showArray(){
+
+	private void showArray() {
 		arrayListLabel = new Label("Array");
 		arrayListLabel.setBounds(550, 215, 150, 25);
 		arrayListLabel.setVisible(false);
@@ -154,13 +156,12 @@ public class InterpretGUI extends Frame implements ActionListener {
 		arrayList.setBounds(550, 240, 200, 100);
 		arrayList.setVisible(false);
 		add(arrayList);
-		
+
 		inputValueToArray = new TextField();
 		inputValueToArray.setBounds(550, 345, 150, 25);
 		inputValueToArray.setVisible(false);
 		add(inputValueToArray);
 
-		
 		selectArrayButton = new Button("Input");
 		selectArrayButton.setBounds(700, 345, 50, 25);
 		selectArrayButton.addActionListener(this);
@@ -180,20 +181,26 @@ public class InterpretGUI extends Frame implements ActionListener {
 		if (e.getSource() == classInputButton)
 			showGotConstructors();
 		else if (e.getSource() == selectConstructorButton) {
-			if ((constructors[constructorChoice.getSelectedIndex()].getGenericParameterTypes()).length == 0){
-				//以下はあとでまとめてローカル関数化
+			if ((constructors[constructorChoice.getSelectedIndex()].getGenericParameterTypes()).length == 0) {
+				try {
+					instance = c.newInstance();
+				} catch (InstantiationException | IllegalAccessException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				}
+				instanceList.add(instance.toString());
+				// 以下はあとでまとめてローカル関数化
 				instanceListLabel.setVisible(true);
 				instanceList.setVisible(true);
 				inputValueToInstance.setVisible(true);
 				selectInstanceButton.setVisible(true);
-				
+
 				arrayListLabel.setVisible(true);
 				arrayList.setVisible(true);
 				inputValueToArray.setVisible(true);
 				selectArrayButton.setVisible(true);
 
-			}
-			else {
+			} else {
 				inputArgumentLabel.setVisible(true);
 				argumentInputText.setVisible(true);
 				argumentInputButton.setVisible(true);
@@ -202,14 +209,12 @@ public class InterpretGUI extends Frame implements ActionListener {
 		}
 	}
 
-
-
 	private void showEntryArgument() {
 
 	}
 
 	public void showGotConstructors() {
-		Class<?> c = null;
+		c = null;
 		try {
 			c = Class.forName(classInputText.getText());
 		} catch (ClassNotFoundException e1) {
