@@ -36,7 +36,7 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 		setLayout(grid);
 
 		setTitle("プロパティ");
-		setSize(200, 150);
+		setSize(300, 150);
 		setResizable(false);
 	
 		addWindowListener(new MyWindowsListenerForDialog());
@@ -56,8 +56,8 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 			backcolor.add("black");
 			backcolor.add("white");
 		}
-		addComponent(backcolor, 0, 0, 1, 1);
-		addComponentOnLabel(backcolorlabel, 2, 0, 1, 1);
+		addComponent(backcolor, 2, 0, 1, 1);
+		addComponentOnLabel(backcolorlabel, 0, 0, 1, 1);
 
 		// フォント
 		if (frame.mojifont == " sans-serif") {
@@ -68,8 +68,8 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 			mojifont.add("serif");
 		}
 
-		addComponent(mojifont, 0, 1, 1, 1);
-		addComponentOnLabel(fontlabel, 2, 1, 1, 1);
+		addComponent(mojifont, 2, 1, 1, 1);
+		addComponentOnLabel(fontlabel, 0, 1, 1, 1);
 
 		// 文字サイズ
 		if (frame.mojisize == 40) {
@@ -79,8 +79,8 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 			mojisize.add("50");
 			mojisize.add("40");
 		}
-		addComponent(mojisize, 0, 2, 1, 1);
-		addComponentOnLabel(mojisizelabel, 2, 2, 1, 1);
+		addComponent(mojisize, 2, 2, 1, 1);
+		addComponentOnLabel(mojisizelabel, 0, 2, 1, 1);
 
 		// 文字カラー
 		if (frame.mojicolor == "white") {
@@ -90,8 +90,8 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 			mojicolor.add("black");
 			mojicolor.add("white");
 		}
-		addComponent(mojicolor, 0, 3, 1, 1);
-		addComponentOnLabel(mojicolorlabel, 2, 3, 1, 1);
+		addComponent(mojicolor, 2, 3, 1, 1);
+		addComponentOnLabel(mojicolorlabel, 0, 3, 1, 1);
 
 		b1.addActionListener(this);
 		addComponent(b1, 1, 4, 1, 1);

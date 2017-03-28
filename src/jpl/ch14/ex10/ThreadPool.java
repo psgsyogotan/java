@@ -84,6 +84,7 @@ public class ThreadPool {
 				}
 			}
 		}
+		tpState = false;
 	}
 
 	/**
@@ -127,12 +128,13 @@ public class ThreadPool {
 				synchronized (queue) {
 					if (!tpState && queue.isEmpty())
 						return;
-					while (queue.isEmpty())
+					while (queue.isEmpty()){
 						try {
 							queue.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+					}
 					Runnable r = queue.poll();
 					r.run();
 					queue.notifyAll();

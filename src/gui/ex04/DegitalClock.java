@@ -38,7 +38,7 @@ public class DegitalClock extends Frame implements Runnable{
 		mojisize = prefs.getInt("mojisize", 40);
 		mojifont = prefs.get("mojifont", "serif");
 		mojicolor = prefs.get("mojicolor", "black");
-		color= prefs.get("mojisize", "white");
+		color= prefs.get("color", "white");
 		startposx = prefs.getInt("framex", 0);
 		startposy = prefs.getInt("framey", 0);
 
