@@ -361,7 +361,9 @@ public class InterpretGUI extends Frame implements ActionListener {
 
 	private void showAndGetInstanceMethod() {
 		methods = c.getMethods();
+		instanceMethodNameList.removeAll();
 		for(Method method : methods){
+			method.setAccessible(true);
 			instanceMethodNameList.add(method.getName());
 			
 		}
@@ -369,7 +371,9 @@ public class InterpretGUI extends Frame implements ActionListener {
 
 	private void showAndGetInstanceField() {
 		fields = c.getFields();
+		instanceFeildNameList.removeAll();
 		for(Field field : fields){
+			field.setAccessible(true);
 			try {
 				instanceFeildNameList.add(field.getName()+" : " + field.get(field.getName()));
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -396,7 +400,6 @@ public class InterpretGUI extends Frame implements ActionListener {
 	}
 
 	private void makeInstancefromDefaultConstructor() {
-
 		try {
 			instanceList.add(c.newInstance());
 		} catch (InstantiationException | IllegalAccessException e1) {
