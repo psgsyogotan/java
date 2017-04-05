@@ -64,7 +64,7 @@ public class InterpretGUI extends Frame implements ActionListener {
 	public Constructor[] constructors;
 	public Field[] fields;
 	public Method[] methods;
-	
+
 	public ArrayList<String> getconstructorName;
 
 	int argumentsNum;
@@ -72,8 +72,8 @@ public class InterpretGUI extends Frame implements ActionListener {
 	public Object instance;
 	public int instancecount = 1;
 
-	public ArrayList<Object> instanceList = new ArrayList<Object>();
-	public ArrayList<Object> instanceFieldList = new ArrayList<Object>();
+	public ArrayList<Object> instanceList = new ArrayList<>();
+
 	public ArrayList<Object> instanceMethodList = new ArrayList<Object>();
 
 	public InterpretGUI() {
@@ -345,43 +345,53 @@ public class InterpretGUI extends Frame implements ActionListener {
 		} else if (e.getSource() == argumentInputButton) {
 			makeInstanceFromConstructor(argumentsNum);
 			clearInputAreaForMakingInstance();
-		} else if(e.getSource() == selectInstanceButton){
+		} else if (e.getSource() == selectInstanceButton) {
 			showAndGetInstanceField();
 			showAndGetInstanceMethod();
-		} else if(e.getSource() == setNewValueToInstanceButton){
+		} else if (e.getSource() == setNewValueToInstanceButton) {
 			setNewValueToInstance();
-			
+
 		}
 	}
 
 	private void setNewValueToInstance() {
-		// TODO 自動生成されたメソッド・スタブ
-		
+		fields = c.getFields();
+
 	}
 
 	private void showAndGetInstanceMethod() {
-		methods = c.getMethods();
+		int selectedIndex = instanceNameList.getSelectedIndex();
+		Object selectedInstance = instanceList.get(selectedIndex);
+		Class<?> selectedType = selectedInstance.getClass();
+
 		instanceMethodNameList.removeAll();
-		for(Method method : methods){
-			method.setAccessible(true);
-			instanceMethodNameList.add(method.getName());
+		while (selectedType != Object.class) {
+			methods = selectedType.getDeclaredMethods();
 			
+			for (Method method : methods) {
+				method.setAccessible(true);
+				instanceMethodNameList.add(method.getName());
+			}
+			selectedType = selectedType.getSuperclass();
+
 		}
 	}
 
 	private void showAndGetInstanceField() {
-		fields = c.getFields();
+		int selectedIndex = instanceNameList.getSelectedIndex();
+		Object selectedInstance = instanceList.get(selectedIndex);
+		Class<?> selectedType = selectedInstance.getClass();
+		fields = selectedType.getDeclaredFields();
 		instanceFeildNameList.removeAll();
-		for(Field field : fields){
+		for (Field field : fields) {
 			field.setAccessible(true);
 			try {
-				instanceFeildNameList.add(field.getName()+" : " + field.get(field.getName()));
+				instanceFeildNameList.add(field.getName() + " : " + field.get(selectedInstance)); // field.getName()がダメな理由は？
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-			instanceFieldList.add(field);
-			
+
 		}
 	}
 
@@ -478,11 +488,11 @@ public class InterpretGUI extends Frame implements ActionListener {
 	private ParamsType checkParamsType(String params) {
 		if (params.equals("")) {
 			return ParamsType.EMPTY;
-		} else if (params.charAt(0) == '"' && params.charAt(params.length() - 1) == '"') {
-			return ParamsType.STRING;
 		} else if (params.charAt(0) == '\'' && params.charAt(params.length()) - 1 == '\'') {
 			return ParamsType.CHAR;
-		} else if (params.indexOf('.') > -1 && params.indexOf('.', params.indexOf('.')) == -1) {// ひとつだけ"."を含んでいる
+		} else if (params.charAt(0) == '"' && params.charAt(params.length() - 1) == '"') {
+			return ParamsType.STRING;
+		} else if (params.indexOf('.') > -1 && params.indexOf('.', params.indexOf('.')) == -1) {
 			return ParamsType.DOUBLE;
 		} else if (params.equals("true") || params.equals("false")) {
 			return ParamsType.BOOLEAN;
@@ -519,14 +529,7 @@ public class InterpretGUI extends Frame implements ActionListener {
 	}
 
 	private enum ParamsType {
-		EMPTY,
-		STRING,
-		CHAR, 
-		DOUBLE, 
-		BOOLEAN, 
-		INSTANCE, 
-		INT,
-		UNSUPPORTED
+		CHAR, STRING, INT, DOUBLE, BOOLEAN, INSTANCE, EMPTY, UNSUPPORTED
 	}
 
 }
