@@ -350,8 +350,14 @@ public class InterpretGUI extends Frame implements ActionListener {
 			showAndGetInstanceMethod();
 		} else if (e.getSource() == setNewValueToInstanceButton) {
 			setNewValueToInstance();
+		} else if (e.getSource() == doInstanceMethodButton)
+			invokeMethod();
 
-		}
+	}
+
+	private void invokeMethod() {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 
 	private void setNewValueToInstance() {
@@ -367,7 +373,7 @@ public class InterpretGUI extends Frame implements ActionListener {
 		instanceMethodNameList.removeAll();
 		while (selectedType != Object.class) {
 			methods = selectedType.getDeclaredMethods();
-			
+
 			for (Method method : methods) {
 				method.setAccessible(true);
 				instanceMethodNameList.add(method.getName());
