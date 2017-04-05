@@ -357,6 +357,8 @@ public class InterpretGUI extends Frame implements ActionListener {
 
 	private void invokeMethod() {
 		// TODO 自動生成されたメソッド・スタブ
+		int selectedIndex = instanceMethodNameList.getSelectedIndex();
+		Object selectedMethod = instanceMethodList.get(selectedIndex);
 		
 	}
 
@@ -377,6 +379,7 @@ public class InterpretGUI extends Frame implements ActionListener {
 			for (Method method : methods) {
 				method.setAccessible(true);
 				instanceMethodNameList.add(method.getName());
+				instanceMethodList.add(method);
 			}
 			selectedType = selectedType.getSuperclass();
 
