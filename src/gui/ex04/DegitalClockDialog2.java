@@ -129,7 +129,7 @@ public class DegitalClockDialog2 extends Dialog implements ActionListener {
 		gridcom.gridwidth = w;
 		gridcom.gridheight = h;
 		grid.setConstraints(com, gridcom);
-		add(com);
+		this.add(com);
 	}
 	
 	void addComponentOnLabel(Component com, int x, int y, int w, int h) {
