@@ -19,9 +19,9 @@ public class DataHandler {
 		//記憶していないので、読み込む
 		//readBytesFromFileの中身が不明
 		//自分で実装するということ？
-		data = readBytesFromFile(file);
-		lastData = new WeakReference<byte[]>(data);
-		return data;
+		//data = readBytesFromFile(file);
+		//lastData = new WeakReference<byte[]>(data);
+		//return data;
 
 	}
 
