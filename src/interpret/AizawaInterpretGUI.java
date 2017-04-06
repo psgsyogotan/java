@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-public class InterpretGUI extends Frame implements ActionListener {
+public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 	public Button startButton;
 	public Button resetButton;
@@ -62,26 +62,27 @@ public class InterpretGUI extends Frame implements ActionListener {
 	Class<?> c = null;
 
 	public Constructor[] constructors;
-	public Field[] fields;
-	public Method[] methods;
-
 	public ArrayList<String> getconstructorName;
 
 	int argumentsNum;
 
 	public Object instance;
-	public int instancecount = 1;
+	public int instancecount = 0;
 
 	public ArrayList<Object> instanceList = new ArrayList<>();
+	public ArrayList<Field> instanceFieldList = new ArrayList<Field>();
+	public ArrayList<Method> instanceMethodList = new ArrayList<Method>();
 
-	public ArrayList<Object> instanceMethodList = new ArrayList<Object>();
+	public int xlength = 800;
+	public int ylength = 700;
 
-	public InterpretGUI() {
+	public AizawaInterpretGUI() {
 
-		setSize(800, 700);
+		setSize(xlength, ylength);
 		setResizable(false);
 		setVisible(true);
 		setLayout(null);
+
 
 		// start Button
 		startButton = new Button("Start");
@@ -268,6 +269,10 @@ public class InterpretGUI extends Frame implements ActionListener {
 		selectArrayButton.setEnabled(true);
 		inputValueToArray.setEnabled(true);
 		selectArrayButton.setEnabled(true);
+		setNewValueToInstanceButton.setEnabled(false);
+		doInstanceMethodButton.setEnabled(false);
+		inputValueToInstance.setEnabled(false);
+		inputValueForMethod.setEnabled(false);
 
 	}
 
@@ -284,6 +289,10 @@ public class InterpretGUI extends Frame implements ActionListener {
 		selectArrayButton.setEnabled(false);
 		inputValueToArray.setEnabled(false);
 		selectArrayButton.setEnabled(false);
+		setNewValueToInstanceButton.setEnabled(false);
+		doInstanceMethodButton.setEnabled(false);
+		inputValueToInstance.setEnabled(false);
+		inputValueForMethod.setEnabled(false);
 
 	}
 
@@ -300,6 +309,10 @@ public class InterpretGUI extends Frame implements ActionListener {
 		selectArrayButton.setEnabled(false);
 		inputValueToArray.setEnabled(false);
 		selectArrayButton.setEnabled(false);
+		setNewValueToInstanceButton.setEnabled(false);
+		doInstanceMethodButton.setEnabled(false);
+		inputValueToInstance.setEnabled(false);
+		inputValueForMethod.setEnabled(false);
 
 	}
 
@@ -316,11 +329,33 @@ public class InterpretGUI extends Frame implements ActionListener {
 		selectArrayButton.setEnabled(false);
 		inputValueToArray.setEnabled(false);
 		selectArrayButton.setEnabled(false);
+		setNewValueToInstanceButton.setEnabled(false);
+		doInstanceMethodButton.setEnabled(false);
+
+	}
+
+	private void setNewValueOrInvokeMethod() {
+		startButton.setEnabled(false);
+		resetButton.setEnabled(true);
+		classInputText.setEnabled(false);
+		classInputButton.setEnabled(false);
+		constructorChoice.setEnabled(false);
+		selectConstructorButton.setEnabled(false);
+		argumentInputText.setEnabled(true);
+		argumentInputButton.setEnabled(true);
+		selectInstanceButton.setEnabled(true);
+		selectArrayButton.setEnabled(false);
+		inputValueToArray.setEnabled(false);
+		selectArrayButton.setEnabled(false);
+		setNewValueToInstanceButton.setEnabled(true);
+		doInstanceMethodButton.setEnabled(true);
+		inputValueToInstance.setEnabled(true);
+		inputValueForMethod.setEnabled(true);
 
 	}
 
 	public static void main(String[] args) {
-		InterpretGUI gui = new InterpretGUI();
+		AizawaInterpretGUI gui = new AizawaInterpretGUI();
 	}
 
 	@Override
@@ -348,24 +383,52 @@ public class InterpretGUI extends Frame implements ActionListener {
 		} else if (e.getSource() == selectInstanceButton) {
 			showAndGetInstanceField();
 			showAndGetInstanceMethod();
+			setNewValueOrInvokeMethod();
 		} else if (e.getSource() == setNewValueToInstanceButton) {
 			setNewValueToInstance();
+			showAndGetInstanceField();
 		} else if (e.getSource() == doInstanceMethodButton)
 			invokeMethod();
 
 	}
 
 	private void invokeMethod() {
-		// TODO 自動生成されたメソッド・スタブ
-		int selectedIndex = instanceMethodNameList.getSelectedIndex();
-		Object selectedMethod = instanceMethodList.get(selectedIndex);
-		
+		int selectedIndex = instanceNameList.getSelectedIndex();
+		Object selectedInstance = instanceList.get(selectedIndex);
+		//java.lang.reflect.Type[] paramTypes = instanceMethodList.get(selectedIndex).getGenericParameterTypes();
+		java.lang.reflect.Type[] paramTypes = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).getGenericParameterTypes();
+		Object[] params = new Object[paramTypes.length];
+		params = toParamArr(inputValueForMethod.getText(),paramTypes.length);
+
+		if(params.length == 0){
+			try {
+				instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		} else
+			try {
+				instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance,params);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+
 	}
 
 	private void setNewValueToInstance() {
-		fields = c.getFields();
+		int selectedIndex = instanceNameList.getSelectedIndex();
+		Object selectedInstance = instanceList.get(selectedIndex);
+		Object newObj = strToObj(inputValueToInstance.getText());
+		try {
+			instanceFieldList.get(instanceFeildNameList.getSelectedIndex()).set(selectedInstance, newObj);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 
 	}
+
+
 
 	private void showAndGetInstanceMethod() {
 		int selectedIndex = instanceNameList.getSelectedIndex();
@@ -373,33 +436,43 @@ public class InterpretGUI extends Frame implements ActionListener {
 		Class<?> selectedType = selectedInstance.getClass();
 
 		instanceMethodNameList.removeAll();
+		instanceMethodList.clear();
 		while (selectedType != Object.class) {
-			methods = selectedType.getDeclaredMethods();
+			Method[] methods = selectedType.getDeclaredMethods();
 
 			for (Method method : methods) {
 				method.setAccessible(true);
-				instanceMethodNameList.add(method.getName());
+				Class<?>[] params = method.getParameterTypes();
+				String displayParam = "";
+				for(Class<?> param: params){
+					displayParam += param.getSimpleName();
+				}
+				instanceMethodNameList.add(method.getName()+"(" + displayParam + ")");
 				instanceMethodList.add(method);
 			}
 			selectedType = selectedType.getSuperclass();
-
 		}
+		inputValueForMethod.setText("");
 	}
 
 	private void showAndGetInstanceField() {
 		int selectedIndex = instanceNameList.getSelectedIndex();
 		Object selectedInstance = instanceList.get(selectedIndex);
 		Class<?> selectedType = selectedInstance.getClass();
-		fields = selectedType.getDeclaredFields();
+		Field[] fields = selectedType.getDeclaredFields();
+
 		instanceFeildNameList.removeAll();
+		instanceFieldList.clear();
 		for (Field field : fields) {
 			field.setAccessible(true);
 			try {
 				instanceFeildNameList.add(field.getName() + " : " + field.get(selectedInstance)); // field.getName()がダメな理由は？
+				instanceFieldList.add(field);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
+			inputValueToInstance.setText("");
 
 		}
 	}
@@ -470,15 +543,12 @@ public class InterpretGUI extends Frame implements ActionListener {
 				break;
 			case CHAR:
 				objParamsArray[i] = strParamsArray[i].charAt(1);// ''を取り除く
-				// TODO 複数文字入力されたときどうするか
 				break;
 			case DOUBLE:
 				objParamsArray[i] = Double.parseDouble(strParamsArray[i]);
-				// TODO 値チェックを追加する
 				break;
 			case INT:
 				objParamsArray[i] = Integer.parseInt(strParamsArray[i]);
-				// TODO 値チェックを追加する
 				break;
 			case BOOLEAN:
 				objParamsArray[i] = Boolean.valueOf(strParamsArray[i]);
@@ -535,6 +605,36 @@ public class InterpretGUI extends Frame implements ActionListener {
 			endIndex = strParams.indexOf(',', beginIndex);
 		}
 		return strParamsArray;
+	}
+
+	private Object strToObj(String text) {
+		Object changeTypedObject = new Object();
+		switch(checkParamsType(text)){
+		case DOUBLE:
+			changeTypedObject = Double.parseDouble(text);
+			break;
+		case CHAR:
+			changeTypedObject = text.charAt(1);
+			break;
+		case STRING:
+			changeTypedObject = text.substring(1,text.length() - 1);
+			break;
+		case INT:
+			changeTypedObject = Integer.parseInt(text);
+			break;
+		case BOOLEAN:
+			changeTypedObject =Boolean.valueOf(text);
+			break;
+		case INSTANCE:
+			changeTypedObject = instanceList.get(Integer.parseInt(text.substring(1, text.length())));
+			break;
+		case EMPTY:
+			break;
+		default:
+			break;
+
+		}
+		return changeTypedObject;
 	}
 
 	private enum ParamsType {

@@ -15,5 +15,12 @@ public class DecryptInputStream extends FilterInputStream {
 		
 	}
 	
+	public int read(byte[] b, int offset, int count) throws IOException{
+		for(int i = offset; i < offset + count; i++){
+			b[i] = (byte)(super.read() + 15);
+		}
+		return super.read(b,offset,count);
+	}
+	
 	
 }
