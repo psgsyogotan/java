@@ -40,12 +40,11 @@ public class ThreadPool {
 		this.queueSize = queueSize;
 		queue = new LinkedList<Runnable>();
 		workers = new Thread[numberOfThreads];
-		ThreadPoolRunnable tpl = new ThreadPoolRunnable();
+		ThreadPoolRunnable tpr = new ThreadPoolRunnable();
 
 		for (int i = 0; i < numberOfThreads; i++)
-			workers[i] = new Thread(tpl);
+			workers[i] = new Thread(tpr);
 
-		tpState = false;
 	}
 
 	/**
@@ -55,13 +54,13 @@ public class ThreadPool {
 	 *             if threads has been already started.
 	 */
 	public void start() {
-		if(tpState)
+		if (tpState)
 			throw new IllegalStateException();
-		
-		for(int i = 0; i <workers.length; i++)
-			workers[i].start();
-		
+
 		tpState = true;
+		for (int i = 0; i < workers.length; i++)
+			workers[i].start();
+
 	}
 
 	/**
@@ -71,20 +70,22 @@ public class ThreadPool {
 	 *             if threads has not been started.
 	 */
 	public void stop() {
-		if(!tpState)
+		if (!tpState)
 			throw new IllegalStateException();
-		
-		synchronized(queue){
-			for(int i = 0; i < workers.length; i++){
-				try{
+
+		tpState = false;
+
+		synchronized (queue) {
+			for (int i = 0; i < workers.length; i++) {
+				try {
 					workers[i].join(1);
-					
-				}catch(InterruptedException e){
+
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		tpState = false;
+
 	}
 
 	/**
@@ -101,19 +102,18 @@ public class ThreadPool {
 	 *             if this pool has not been started yet.
 	 */
 	public synchronized void dispatch(Runnable runnable) {
-		if(!tpState)
+		if (!tpState)
 			throw new IllegalStateException();
-		if(runnable == null)
+		if (runnable == null)
 			throw new NullPointerException();
-		
-		synchronized(queue){
-			while(queue.size() > queueSize){
-				try{
-				queue.wait();
-				}catch(InterruptedException e){
+
+		synchronized (queue) {
+			while (queue.size() > queueSize) {
+				try {
+					queue.wait();
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			
 			}
 			queue.add(runnable);
 			queue.notifyAll();
@@ -125,24 +125,23 @@ public class ThreadPool {
 		@Override
 		public void run() {
 			while (true) {
+				Runnable r;
 				synchronized (queue) {
-					if (!tpState && queue.isEmpty())
-						return;
-					while (queue.isEmpty()){
+					while (queue.isEmpty()) {
 						try {
 							queue.wait();
+							if (!tpState && queue.isEmpty())
+								return;
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
-					Runnable r = queue.poll();
-					r.run();
+					r = queue.poll();
 					queue.notifyAll();
-
 				}
+				r.run();
 			}
 		}
-
 	}
 
 }
