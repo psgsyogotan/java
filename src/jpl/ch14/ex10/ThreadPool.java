@@ -53,7 +53,7 @@ public class ThreadPool {
 	 * @throws IllegalStateException
 	 *             if threads has been already started.
 	 */
-	public void start() {
+	public synchronized void start() {
 		if (tpState)
 			throw new IllegalStateException();
 
@@ -92,7 +92,7 @@ public class ThreadPool {
 	 * Executes the specified Runnable object, using a thread in the pool. run()
 	 * method will be invoked in the thread. If the queue is full, then this
 	 * method invocation will be blocked until the queue is not full.
-	 * 
+	 *
 	 * @param runnable
 	 *            Runnable object whose run() method will be invoked.
 	 *
@@ -121,27 +121,28 @@ public class ThreadPool {
 	}
 
 	private class ThreadPoolRunnable implements Runnable {
-
 		@Override
 		public void run() {
-			while (true) {
-				Runnable r;
-				synchronized (queue) {
-					while (queue.isEmpty()) {
-						try {
+			try {
+				while (true) {
+					Runnable head;
+					synchronized (queue) {
+						while (queue.isEmpty()) {
 							queue.wait();
-							if (!tpState && queue.isEmpty())
-								return;
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+							synchronized (this) {
+								if (!tpState && queue.isEmpty())
+									return;
+							}
 						}
+						head = queue.poll();
+						queue.notifyAll();
 					}
-					r = queue.poll();
-					queue.notifyAll();
+					head.run();
 				}
-				r.run();
+			} catch (final InterruptedException e) {
+				return;
 			}
 		}
 	}
-
 }
+
