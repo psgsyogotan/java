@@ -1,35 +1,40 @@
 package jpl.ch20.ex02;
 
 
-import java.io.FilterInputStream;
+import java.io.FilterReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 
-
-public class TranslateByteByFilter extends FilterInputStream {
+public class TranslateByteByFilter extends FilterReader {
 
 	String fromString;
 	String toString;
-	protected TranslateByteByFilter(InputStream in, String fromString, String toString) {
-		super(in);
+
+	protected TranslateByteByFilter(Reader reader, String fromString, String toString) {
+		super(reader);
 		this.fromString = fromString;
 		this.toString = toString;
 	}
 
-	public static void main(String[] args) throws IOException {
-		TranslateByteByFilter tByte = new TranslateByteByFilter(System.in, args[0], args[1]);
-		int b;
-		while((b = tByte.read()) != -1)
-			System.out.write(b);
-		
-		tByte.close();
-	}
-
 	public int read() throws IOException {
 		byte from = (byte) fromString.charAt(0);
-		byte to = (byte)toString.charAt(0);
-		
+		byte to = (byte) toString.charAt(0);
+
 		int c = super.read();
-		return((c == -1) ? c : (c == from) ? to : c);
+		return (c == from) ? to : c;
 	}
+
+	public static void main(String[] args) throws IOException
+	{
+		StringReader src = new StringReader("abc");
+		FilterReader fr = new TranslateByteByFilter(src, "a","A");
+		int c;
+		while((c = fr.read()) != -1){
+		//	System.out.print((char)c);
+			System.out.print((char)c);
+
+		}
+	}
+
 }
