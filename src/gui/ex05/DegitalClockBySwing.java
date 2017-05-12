@@ -16,7 +16,6 @@ public class DegitalClockBySwing extends JFrame {
 	public DegitalClockBySwing() {
 		setSize(300, 300);
 		setVisible(true);
-		setResizable(false);
 		addWindowListener(new MyWindowsAdapter());
 		DegitalClockPanel dcp = new DegitalClockPanel();
 		add(dcp);
