@@ -5,6 +5,7 @@ import java.awt.Choice;
 import java.awt.Frame;
 import java.awt.Label;
 import java.awt.List;
+import java.awt.TextArea;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,6 +74,9 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 	public ArrayList<Field> instanceFieldList = new ArrayList<Field>();
 	public ArrayList<Method> instanceMethodList = new ArrayList<Method>();
 
+	public Label executeLabel;
+	public TextArea executeText;
+
 	public int xlength = 800;
 	public int ylength = 700;
 
@@ -82,7 +86,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		setResizable(false);
 		setVisible(true);
 		setLayout(null);
-
 
 		// start Button
 		startButton = new Button("Start");
@@ -245,6 +248,17 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		doInstanceMethodButton.setEnabled(false);
 		add(doInstanceMethodButton);
 
+		// Instance List
+		executeLabel = new Label("execute");
+		executeLabel.setBounds(550, 570, 150, 25);
+		executeLabel.setVisible(true);
+		add(executeLabel);
+
+		executeText = new TextArea();
+		executeText.setBounds(550, 600, 200, 50);
+		executeText.setVisible(true);
+		add(executeText);
+
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -395,22 +409,39 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 	private void invokeMethod() {
 		int selectedIndex = instanceNameList.getSelectedIndex();
 		Object selectedInstance = instanceList.get(selectedIndex);
-		//java.lang.reflect.Type[] paramTypes = instanceMethodList.get(selectedIndex).getGenericParameterTypes();
-		java.lang.reflect.Type[] paramTypes = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).getGenericParameterTypes();
+		// java.lang.reflect.Type[] paramTypes =
+		// instanceMethodList.get(selectedIndex).getGenericParameterTypes();
+		java.lang.reflect.Type[] paramTypes = instanceMethodList.get(instanceMethodNameList.getSelectedIndex())
+				.getGenericParameterTypes();
 		Object[] params = new Object[paramTypes.length];
-		params = toParamArr(inputValueForMethod.getText(),paramTypes.length);
+		params = toParamArr(inputValueForMethod.getText(), paramTypes.length);
+		executeText.setText("");
 
-		if(params.length == 0){
+		if (params.length == 0) {
 			try {
-				instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
+				Object obj = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance);
+				if(obj.equals(null))
+					executeText.setText("null");
+				else
+					executeText.setText(obj.toString());
+			} catch (IllegalAccessException | IllegalArgumentException e) {
+				ShowException(e.toString());
+			} catch (InvocationTargetException e2) {
+				ShowException(e2.getCause().toString());
 			}
+
 		} else
 			try {
-				instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance,params);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
+				Object obj = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance, params);
+				if(obj.equals(null))
+					executeText.setText("null");
+				else
+					executeText.setText(obj.toString());
+			} catch (IllegalAccessException | IllegalArgumentException e) {
+				ShowException(e.toString());
+			} catch (InvocationTargetException e2) {
+				ShowException(e2.getCause().toString());
+
 			}
 
 	}
@@ -422,13 +453,10 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		try {
 			instanceFieldList.get(instanceFeildNameList.getSelectedIndex()).set(selectedInstance, newObj);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			ShowException(e.toString());
 		}
 
-
 	}
-
-
 
 	private void showAndGetInstanceMethod() {
 		int selectedIndex = instanceNameList.getSelectedIndex();
@@ -444,10 +472,10 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 				method.setAccessible(true);
 				Class<?>[] params = method.getParameterTypes();
 				String displayParam = "";
-				for(Class<?> param: params){
+				for (Class<?> param : params) {
 					displayParam += param.getSimpleName();
 				}
-				instanceMethodNameList.add(method.getName()+"(" + displayParam + ")");
+				instanceMethodNameList.add(method.getName() + "(" + displayParam + ")");
 				instanceMethodList.add(method);
 			}
 			selectedType = selectedType.getSuperclass();
@@ -469,8 +497,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 				instanceFeildNameList.add(field.getName() + " : " + field.get(selectedInstance)); // field.getName()がダメな理由は？
 				instanceFieldList.add(field);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				ShowException(e.toString());
 			}
 			inputValueToInstance.setText("");
 
@@ -481,8 +508,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		try {
 			c = Class.forName(classInputText.getText());
 		} catch (ClassNotFoundException e1) {
-			// TODO 自動生成された catch ブロック
-			e1.printStackTrace();
+			ShowException(e1.toString());
 		}
 
 		constructors = c.getConstructors();
@@ -494,13 +520,12 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 	private void makeInstancefromDefaultConstructor() {
 		try {
 			instanceList.add(c.newInstance());
+			instanceNameList.add("@" + instancecount + ":"
+					+ constructors[constructorChoice.getSelectedIndex()].getDeclaringClass().getSimpleName());
+			instancecount++;
 		} catch (InstantiationException | IllegalAccessException e1) {
-			// TODO 自動生成された catch ブロック
-			e1.printStackTrace();
+			ShowException(e1.toString());
 		}
-		instanceNameList.add("@" + instancecount + ":"
-				+ constructors[constructorChoice.getSelectedIndex()].getDeclaringClass().getSimpleName());
-		instancecount++;
 
 	}
 
@@ -510,18 +535,18 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 			arguments = toParamArr(argumentInputText.getText(), elements);
 			try {
 				instanceList.add(constructors[constructorChoice.getSelectedIndex()].newInstance(arguments));
-			} catch (IllegalArgumentException | InvocationTargetException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				instanceNameList.add("@" + instancecount + ":"
+						+ constructors[constructorChoice.getSelectedIndex()].getDeclaringClass().getSimpleName());
+				instancecount++;
+
+			} catch (IllegalArgumentException e) {
+				ShowException(e.toString());
+			} catch (InvocationTargetException e2) {
+				ShowException(e2.getCause().toString());
 			}
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			ShowException(e.toString());
 		}
-
-		instanceNameList.add("@" + instancecount + ":"
-				+ constructors[constructorChoice.getSelectedIndex()].getDeclaringClass().getSimpleName());
-		instancecount++;
 
 	}
 
@@ -609,7 +634,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 	private Object strToObj(String text) {
 		Object changeTypedObject = new Object();
-		switch(checkParamsType(text)){
+		switch (checkParamsType(text)) {
 		case DOUBLE:
 			changeTypedObject = Double.parseDouble(text);
 			break;
@@ -617,13 +642,13 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 			changeTypedObject = text.charAt(1);
 			break;
 		case STRING:
-			changeTypedObject = text.substring(1,text.length() - 1);
+			changeTypedObject = text.substring(1, text.length() - 1);
 			break;
 		case INT:
 			changeTypedObject = Integer.parseInt(text);
 			break;
 		case BOOLEAN:
-			changeTypedObject =Boolean.valueOf(text);
+			changeTypedObject = Boolean.valueOf(text);
 			break;
 		case INSTANCE:
 			changeTypedObject = instanceList.get(Integer.parseInt(text.substring(1, text.length())));
@@ -639,6 +664,24 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 	private enum ParamsType {
 		CHAR, STRING, INT, DOUBLE, BOOLEAN, INSTANCE, EMPTY, UNSUPPORTED
+	}
+
+	private void ShowException(String exception) {
+		Frame frame;
+		frame = new Frame("Exception");
+		frame.setSize(360, 240);
+		frame.setVisible(true);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				frame.dispose();
+
+			}
+		});
+
+		Label label;
+		label = new Label(exception);
+		frame.add(label);
+
 	}
 
 }
