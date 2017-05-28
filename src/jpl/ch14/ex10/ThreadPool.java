@@ -121,28 +121,27 @@ public class ThreadPool {
 	}
 
 	private class ThreadPoolRunnable implements Runnable {
+
 		@Override
 		public void run() {
-			try {
-				while (true) {
-					Runnable head;
-					synchronized (queue) {
-						while (queue.isEmpty()) {
+			while (true) {
+				Runnable r;
+				synchronized (queue) {
+					while (queue.isEmpty()) {
+						try {
 							queue.wait();
-							synchronized (this) {
-								if (!tpState && queue.isEmpty())
-									return;
-							}
+							if (!tpState && queue.isEmpty())
+								return;
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						head = queue.poll();
-						queue.notifyAll();
 					}
-					head.run();
+					r = queue.poll();
+					queue.notifyAll();
 				}
-			} catch (final InterruptedException e) {
-				return;
+				r.run();
 			}
 		}
 	}
-}
 
+}
