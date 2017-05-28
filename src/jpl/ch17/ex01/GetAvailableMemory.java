@@ -9,5 +9,12 @@ public class GetAvailableMemory {
 		long[] array = new long[10000000];
 
 		System.out.println("After : " + Runtime.getRuntime().freeMemory());
+		Runtime.getRuntime().gc();
+
+		System.out.println("gc1: " + Runtime.getRuntime().freeMemory());
+
+		Runtime.getRuntime().gc();
+		System.out.println("gc2: " + Runtime.getRuntime().freeMemory());
+
 	}
 }

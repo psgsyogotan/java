@@ -153,7 +153,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(false);
 		add(argumentInputText);
 
-		argumentInputButton = new Button("Generation");
+		argumentInputButton = new Button("みかんせい　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　!");
 		argumentInputButton.setBounds(430, 250, 70, 25);
 		argumentInputButton.addActionListener(this);
 		argumentInputButton.setVisible(true);

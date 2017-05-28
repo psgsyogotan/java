@@ -20,7 +20,7 @@ public class ThreadPool {
 	final int queueSize;
 	final Queue<Runnable> queue;
 	final Thread[] workers;
-	boolean tpState = false;
+	volatile boolean tpState = false;
 
 	/**
 	 * Constructs ThreadPool.
