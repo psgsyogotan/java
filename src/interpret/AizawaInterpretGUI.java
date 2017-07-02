@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -42,6 +43,11 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 	public java.awt.List arrayList;
 	public TextField inputValueToArray;
 	public Button selectArrayButton;
+	public TextField inputTypeToArray;
+	public TextField inputlengthToArray;
+	public TextField changeValueToArray;
+	public Button changeArrayButton;
+	public Button showArrayButton;
 
 	// InstanceList
 	public Label instanceListLabel;
@@ -79,6 +85,8 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 	public int xlength = 800;
 	public int ylength = 700;
+
+	private Class<?> type;
 
 	public AizawaInterpretGUI() {
 
@@ -153,7 +161,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(false);
 		add(argumentInputText);
 
-		argumentInputButton = new Button("みかんせい　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　!");
+		argumentInputButton = new Button("generate");
 		argumentInputButton.setBounds(430, 250, 70, 25);
 		argumentInputButton.addActionListener(this);
 		argumentInputButton.setVisible(true);
@@ -161,26 +169,54 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		add(argumentInputButton);
 
 		// Array area
-		arrayListLabel = new Label("Array");
-		arrayListLabel.setBounds(50, 285, 150, 25);
+		arrayListLabel = new Label("Array Type");
+		arrayListLabel.setBounds(50, 325, 150, 25);
 		arrayListLabel.setVisible(true);
 		add(arrayListLabel);
 
-		arrayList = new List();
-		arrayList.setBounds(50, 310, 200, 100);
-		arrayList.setVisible(true);
-		add(arrayList);
+		inputTypeToArray = new TextField();
+		inputTypeToArray.setBounds(50, 355, 150, 25);
+		inputTypeToArray.setVisible(true);
+		add(inputTypeToArray);
 
-		inputValueToArray = new TextField();
-		inputValueToArray.setBounds(50, 415, 150, 25);
-		inputValueToArray.setVisible(true);
-		add(inputValueToArray);
+		// Array area
+		arrayListLabel = new Label("Array Length");
+		arrayListLabel.setBounds(50, 385, 150, 25);
+		arrayListLabel.setVisible(true);
+		add(arrayListLabel);
 
-		selectArrayButton = new Button("Input");
-		selectArrayButton.setBounds(200, 415, 50, 25);
+		inputlengthToArray = new TextField();
+		inputlengthToArray.setBounds(50, 415, 150, 25);
+		inputlengthToArray.setVisible(true);
+		add(inputlengthToArray);
+
+		selectArrayButton = new Button("Generate");
+		selectArrayButton.setBounds(200, 415, 60, 25);
 		selectArrayButton.addActionListener(this);
 		selectArrayButton.setVisible(true);
 		add(selectArrayButton);
+
+		showArrayButton = new Button("Show");
+		showArrayButton.setBounds(265, 415, 60, 25);
+		showArrayButton.addActionListener(this);
+		showArrayButton.setVisible(true);
+		add(showArrayButton);
+
+		arrayList = new List();
+		arrayList.setBounds(50, 445, 200, 100);
+		arrayList.setVisible(true);
+		add(arrayList);
+
+		changeValueToArray = new TextField();
+		changeValueToArray.setBounds(50, 550, 150, 25);
+		changeValueToArray.setVisible(true);
+		add(changeValueToArray);
+
+		changeArrayButton = new Button("change");
+		changeArrayButton.setBounds(200, 550, 60, 25);
+		changeArrayButton.addActionListener(this);
+		changeArrayButton.setVisible(true);
+		add(changeArrayButton);
 
 		// Instance List
 		instanceListLabel = new Label("InstanceList");
@@ -280,9 +316,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setText("");
 		argumentInputButton.setEnabled(false);
 		selectInstanceButton.setEnabled(true);
-		selectArrayButton.setEnabled(true);
-		inputValueToArray.setEnabled(true);
-		selectArrayButton.setEnabled(true);
+
 		setNewValueToInstanceButton.setEnabled(false);
 		doInstanceMethodButton.setEnabled(false);
 		inputValueToInstance.setEnabled(false);
@@ -300,9 +334,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(false);
 		argumentInputButton.setEnabled(false);
 		selectInstanceButton.setEnabled(false);
-		selectArrayButton.setEnabled(false);
-		inputValueToArray.setEnabled(false);
-		selectArrayButton.setEnabled(false);
 		setNewValueToInstanceButton.setEnabled(false);
 		doInstanceMethodButton.setEnabled(false);
 		inputValueToInstance.setEnabled(false);
@@ -320,9 +351,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(false);
 		argumentInputButton.setEnabled(false);
 		selectInstanceButton.setEnabled(false);
-		selectArrayButton.setEnabled(false);
-		inputValueToArray.setEnabled(false);
-		selectArrayButton.setEnabled(false);
 		setNewValueToInstanceButton.setEnabled(false);
 		doInstanceMethodButton.setEnabled(false);
 		inputValueToInstance.setEnabled(false);
@@ -340,9 +368,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(true);
 		argumentInputButton.setEnabled(true);
 		selectInstanceButton.setEnabled(false);
-		selectArrayButton.setEnabled(false);
-		inputValueToArray.setEnabled(false);
-		selectArrayButton.setEnabled(false);
 		setNewValueToInstanceButton.setEnabled(false);
 		doInstanceMethodButton.setEnabled(false);
 
@@ -358,9 +383,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		argumentInputText.setEnabled(true);
 		argumentInputButton.setEnabled(true);
 		selectInstanceButton.setEnabled(true);
-		selectArrayButton.setEnabled(false);
-		inputValueToArray.setEnabled(false);
-		selectArrayButton.setEnabled(false);
 		setNewValueToInstanceButton.setEnabled(true);
 		doInstanceMethodButton.setEnabled(true);
 		inputValueToInstance.setEnabled(true);
@@ -395,20 +417,206 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 			makeInstanceFromConstructor(argumentsNum);
 			clearInputAreaForMakingInstance();
 		} else if (e.getSource() == selectInstanceButton) {
-			showAndGetInstanceField();
-			showAndGetInstanceMethod();
-			setNewValueOrInvokeMethod();
+			int selectedIndex = instanceNameList.getSelectedIndex();// 選択されているインスタンスのIndex取得
+			String selectedItem = instanceNameList.getSelectedItem();
+			if (selectedItem.charAt(selectedItem.length() - 1) == ']') {
+				showArray();
+			} else {
+				showAndGetInstanceField();
+				showAndGetInstanceMethod();
+				setNewValueOrInvokeMethod();
+			}
 		} else if (e.getSource() == setNewValueToInstanceButton) {
 			setNewValueToInstance();
 			showAndGetInstanceField();
-		} else if (e.getSource() == doInstanceMethodButton)
+		} else if (e.getSource() == doInstanceMethodButton) {
 			invokeMethod();
+		} else if (e.getSource() == selectArrayButton) {
+			generateArray();
+		} else if (e.getSource() == showArrayButton) {
+			showContentInArray();
+		} else if (e.getSource() == changeArrayButton) {
+			changeArray();
+		}
 
 	}
 
-	private void invokeMethod() {
+	private void showContentInArray() {
+		int selectedIndex = instanceNameList.getSelectedIndex();// 選択されているインスタンスのIndex取得
+		if (selectedIndex == -1) {
+		} else {
+			String selectedItem = instanceNameList.getSelectedItem();
+			Object selectedInst = null;
+			// 選択されているのが配列のインスタンスか確認
+			if (selectedItem.charAt(selectedItem.length() - 1) == ']') {
+				int selectedArrIndex = arrayList.getSelectedIndex();// 選択されている配列要素のIndexを取得
+				if (selectedArrIndex == -1) {
+				}
+				String selectedArrItem = arrayList.getItem(selectedArrIndex);
+
+				// 選択されているインスタンスと配列要素の対応が正しいか確認（インスタンスの番号が同じか比較）
+				if (selectedArrItem.charAt(1) == selectedItem.charAt(1)) {
+					Object[] selectedArrInst = (Object[]) instanceList.get(selectedIndex);// 選択されている配列を取得
+					selectedInst = selectedArrInst[selectedArrIndex];// 選択されている配列の要素を取得
+				} else {
+				}
+			} else {
+				selectedInst = instanceList.get(selectedIndex);// 選択されているインスタンスを取得
+			}
+			if (selectedInst == null) {
+			}
+
+			instanceMethodNameList.removeAll();
+			instanceMethodList.clear();
+			Class<?> selectedType = selectedInst.getClass();
+			while (selectedType != Object.class) {
+				Method[] methods = selectedType.getDeclaredMethods();
+
+				for (Method method : methods) {
+					method.setAccessible(true);
+					Class<?>[] params = method.getParameterTypes();
+					String displayParam = "";
+					for (Class<?> param : params) {
+						displayParam += param.getSimpleName();
+					}
+					instanceMethodNameList.add(method.getName() + "(" + displayParam + ")");
+					instanceMethodList.add(method);
+				}
+				selectedType = selectedType.getSuperclass();
+			}
+			inputValueForMethod.setText("");
+
+			selectedType = selectedInst.getClass();
+			Field[] fields = selectedType.getDeclaredFields();
+
+			instanceFeildNameList.removeAll();
+			instanceFieldList.clear();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				try {
+					instanceFeildNameList.add(field.getName() + " : " + field.get(selectedInst)); // field.getName()がダメな理由は？
+					instanceFieldList.add(field);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					ShowException(e.toString());
+				}
+				inputValueToInstance.setText("");
+
+			}
+		}
+	}
+
+	private void changeArray() {
+		String newContents = changeValueToArray.getText();
+		int selectedIndex = instanceNameList.getSelectedIndex();// 選択されているインスタンスのIndex取得
+		String selectedItem = instanceNameList.getSelectedItem();// 選択されているインスタンスのString取得
+		if (selectedIndex == -1) {
+		} else if (selectedItem.charAt(selectedItem.length() - 1) == ']') {
+			Object[] selectedInst = (Object[]) instanceList.get(selectedIndex);
+			int selectedArrIndex = arrayList.getSelectedIndex();// 選択されている配列要素のIndex取得
+			if (selectedArrIndex == -1) {
+			} else {
+				try {
+					selectedInst[selectedArrIndex] = toObj(newContents);
+				} catch (java.lang.ArrayStoreException e1) {
+					e1.printStackTrace();
+				}
+				instanceList.set(selectedIndex, selectedInst);
+			}
+		} else {
+		}
+		arrayList.removeAll();
+	}
+
+	private Object toObj(String strParams) {
+		Object objParams = new Object();
+		try {
+			switch (checkParamsType(strParams)) {
+			case EMPTY:
+				break;
+			case STRING:
+				objParams = strParams.substring(1, strParams.length() - 1);// ""を取り除く
+				break;
+			case CHAR:
+				objParams = strParams.charAt(1);// ''を取り除く
+				// TODO 複数文字入力されたときどうするか
+				break;
+			case DOUBLE:
+				objParams = Double.parseDouble(strParams);
+				// TODO 値チェックを追加する
+				break;
+			case INT:
+				objParams = Integer.parseInt(strParams);
+				// TODO 値チェックを追加する
+				break;
+			case BOOLEAN:
+				objParams = Boolean.valueOf(strParams);
+				break;
+			case INSTANCE:
+				objParams = instanceList.get(Integer.parseInt(strParams.substring(1, strParams.length())));// #を取り除く
+				break;
+			case ARR_INSTANCE:
+				String[] instNum = strParams.substring(1).split("@");
+				Object[] inst = (Object[]) instanceList.get(Integer.parseInt(instNum[0]));
+				objParams = inst[Integer.parseInt(instNum[1])];
+				break;
+			default:
+				break;
+			}
+		} catch (NumberFormatException e1) {
+			e1.printStackTrace();
+		}
+		return objParams;
+	}
+
+	private void showArray() {
+		arrayList.removeAll();
 		int selectedIndex = instanceNameList.getSelectedIndex();
-		Object selectedInstance = instanceList.get(selectedIndex);
+		String selectedItem = instanceNameList.getSelectedItem();
+		Object[] selectedInst = (Object[]) instanceList.get(selectedIndex);
+		Class<?> arrType = selectedInst.getClass();
+		for (int i = 0; i < selectedInst.length; i++) {
+			String arrTypeName = arrType.getSimpleName();
+			arrayList.add("@" + selectedIndex + "@" + i + arrTypeName + ":" + selectedInst[i]);
+		}
+	}
+
+	private void generateArray() {
+		String className = inputTypeToArray.getText();
+		int arrayLength = Integer.parseInt(inputlengthToArray.getText());
+		// TODO null check
+		try {
+			type = Class.forName(className);
+			Object[] newArray = toArray(type, arrayLength);
+			instanceList.add(newArray);
+			instanceNameList.add("@" + instancecount + ":" + type.getSimpleName() + "[" + arrayLength + "]");
+			instancecount++;
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+			ShowException(e1.toString());
+		}
+	}
+
+	private Object[] toArray(Class<?> type, int arrayLength) {
+		Object[] arr = (Object[]) Array.newInstance(type, arrayLength);
+		return arr;
+	}
+
+	private void invokeMethod() {
+		int selectedIndex = instanceNameList.getSelectedIndex();// 選択されているインスタンスのIndex取得
+		String selectedItem = instanceNameList.getSelectedItem();
+		Object selectedInstance = null;
+		if (selectedItem.charAt(selectedItem.length() - 1) == ']') {
+
+			int selectedArrIndex = arrayList.getSelectedIndex();//
+			String selectedArrItem = arrayList.getItem(selectedArrIndex);
+
+			if (selectedArrItem.charAt(1) == selectedItem.charAt(1)) {
+				Object[] selectedArrInst = (Object[]) instanceList.get(selectedIndex);
+				selectedInstance = selectedArrInst[selectedArrIndex];
+			}
+		} else {
+			selectedInstance = instanceList.get(selectedIndex);
+		}
 		// java.lang.reflect.Type[] paramTypes =
 		// instanceMethodList.get(selectedIndex).getGenericParameterTypes();
 		java.lang.reflect.Type[] paramTypes = instanceMethodList.get(instanceMethodNameList.getSelectedIndex())
@@ -420,7 +628,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		if (params.length == 0) {
 			try {
 				Object obj = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance);
-				if(obj.equals(null))
+				if (obj.equals(null))
 					executeText.setText("null");
 				else
 					executeText.setText(obj.toString());
@@ -432,8 +640,9 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 		} else
 			try {
-				Object obj = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance, params);
-				if(obj.equals(null))
+				Object obj = instanceMethodList.get(instanceMethodNameList.getSelectedIndex()).invoke(selectedInstance,
+						params);
+				if (obj.equals(null))
 					executeText.setText("null");
 				else
 					executeText.setText(obj.toString());
@@ -441,7 +650,6 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 				ShowException(e.toString());
 			} catch (InvocationTargetException e2) {
 				ShowException(e2.getCause().toString());
-
 			}
 
 	}
@@ -582,6 +790,16 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 				objParamsArray[i] = instanceList
 						.get(Integer.parseInt(strParamsArray[i].substring(1, strParamsArray[i].length())));
 				break;
+			//case ARR_INSTANCE:
+				//String[] instNum = strParamsArray[i].split("@");
+				//Object[] inst = (Object[]) instanceList.get(Integer.parseInt(instNum[0]));
+				//objParamsArray[i] = inst[Integer.parseInt(instNum[1])];
+				//break;
+			case ARR_INSTANCE:
+				String[] instNum = strParamsArray[i].split("@");
+				Object[] inst = (Object[]) instanceList.get(Integer.parseInt(instNum[1]));
+				objParamsArray[i] = inst[Integer.parseInt(instNum[2])];
+				break;
 			default:
 				break;
 			}
@@ -601,7 +819,11 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		} else if (params.equals("true") || params.equals("false")) {
 			return ParamsType.BOOLEAN;
 		} else if (params.charAt(0) == '@') {
-			return ParamsType.INSTANCE;
+			if (params.indexOf('@', 1) == -1) {
+				return ParamsType.INSTANCE;
+			} else {
+				return ParamsType.ARR_INSTANCE;
+			}
 		} else {
 			return ParamsType.INT;
 		}
@@ -653,6 +875,11 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 		case INSTANCE:
 			changeTypedObject = instanceList.get(Integer.parseInt(text.substring(1, text.length())));
 			break;
+		case ARR_INSTANCE:
+			String[] instNum = text.substring(1).split("@");
+			Object[] inst = (Object[]) instanceList.get(Integer.parseInt(instNum[0]));
+			changeTypedObject = inst[Integer.parseInt(instNum[1])];
+			break;
 		case EMPTY:
 			break;
 		default:
@@ -663,7 +890,7 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 	}
 
 	private enum ParamsType {
-		CHAR, STRING, INT, DOUBLE, BOOLEAN, INSTANCE, EMPTY, UNSUPPORTED
+		CHAR, STRING, INT, DOUBLE, BOOLEAN, INSTANCE, EMPTY, UNSUPPORTED, ARR_INSTANCE
 	}
 
 	private void ShowException(String exception) {
