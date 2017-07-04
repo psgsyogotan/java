@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public class GlobalHello {
 	public static void main(String[] args){
-		Locale locale = new Locale("ja_JP");
+		Locale locale = new Locale("en", "AU");
 		Locale.setDefault(locale);
 		ResourceBundle res = ResourceBundle.getBundle("jpl.ch24.ex01.GlobalRes");
 		
