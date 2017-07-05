@@ -10,15 +10,10 @@ public class writeByLambda {
 		jareth.becomeFriend(cory);
 		cory.becomeFriend(jareth);
 		
-		new Thread(new Runnable(){
-			public void run(){jareth.hug();}
-		},"Thread1").start();
+		new Thread(() -> jareth.hug()).run();
+		new Thread(() -> cory.hug()).run();
 		
-		new Thread(new Runnable(){
-			public void run(){cory.hug();}
-		},"Thread2").start();
 		
-		new Runnable(() -> jareth.hug().start());
 
 	}
 

@@ -21,6 +21,7 @@ public class GlobalHelloTest {
 		Locale.setDefault(locale);
 		rb = ResourceBundle.getBundle("jpl.ch24.ex01.GlobalRes");
 		assertEquals("G'day", rb.getString(GlobalRes.HELLO));
+		assertEquals("Goodbye", rb.getString(GlobalRes.GOODBYE));
 
 		locale = new Locale("ja_JP");
 		Locale.setDefault(locale);

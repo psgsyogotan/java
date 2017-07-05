@@ -14,23 +14,24 @@ public class ReadCSV {
 		st.whitespaceChars(',', ',');
 		List<String[]> vals = new ArrayList<String[]>();
 		String[] cells = new String[num];
-
 		int lineNumber = 1;
 		int i = 0;
 
 		while (st.nextToken() != StreamTokenizer.TT_EOF) {
 			if (lineNumber != st.lineno()) {
+				vals.add(cells);
 				cells = new String[num];
 				cells[0] = st.sval;
 				lineNumber = st.lineno();
+				i = 1;
 			} else {
 				cells[i] = st.sval;
 				i++;
-				if (st.nextToken() == StreamTokenizer.TT_EOL)
-					vals.add(cells);
+				
 			}
 
 		}
+		vals.add(cells);
 		return vals;
 
 	}
