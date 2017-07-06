@@ -13,15 +13,6 @@ public class CommandeExecutor extends Thread{
 		this.out = out;
 	}
 
-	public static void main(String[] args) {
-		try {
-			Process proc = userProg("ipconfig");
-			proc.waitFor();
-		} catch (InterruptedException | IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static Process userProg(String cmd) throws IOException {
 		Process proc = Runtime.getRuntime().exec(cmd);
 		plugTogether(System.in, proc.getOutputStream());
@@ -47,8 +38,15 @@ public class CommandeExecutor extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		super.run();
 	}
 
+	public static void main(String[] args) {
+		try {
+			Process proc = userProg("ipconfig");
+			proc.waitFor();
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

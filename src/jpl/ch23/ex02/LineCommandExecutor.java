@@ -6,20 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class LineCommandExecutor {
-	public static void main(String[] args) {
-		try {
-			Process proc = exec("ipconfig");
-			proc.waitFor();
-		} catch (InterruptedException | IOException e) {
-			e.printStackTrace();
-		}
-	}
 
-	public static Process exec(String cmd) throws IOException{
-		return exec(cmd.split(" "));
-	}
 
-	public static Process exec(String[] cmd) throws IOException {
+	public static Process cmdExec(String[] cmd) throws IOException {
 		Process proc = Runtime.getRuntime().exec(cmd);
 		InputStream is = proc.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is);
@@ -31,5 +20,14 @@ public class LineCommandExecutor {
 			System.out.println(count++ + ": " + line);
 		}
 		return proc;
+	}
+
+	public static void main(String[] args) {
+		try {
+			Process proc = cmdExec(args);
+			proc.waitFor();
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

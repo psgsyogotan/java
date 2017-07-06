@@ -15,7 +15,7 @@ public class ReadCSVTable {
 	public static List<String[]> readCSVTable(Readable source, int Num) throws IOException {
 		Scanner in = new Scanner(source);
 		List<String[]> vals = new ArrayList<String[]>();
-		String exp = "~(.*)";
+		String exp = "^(.*)";
 		for (int i = 1; i < Num; i++)
 			exp += ",(.*)";
 		exp += "$";
@@ -50,7 +50,7 @@ public class ReadCSVTable {
 	public static void main(String[] args) {
 		BufferedReader input = null;
 		try {
-			input = new BufferedReader(new FileReader(Path));
+			input = new BufferedReader(new FileReader(".\\src\\jpl\\ch22\\ex07\\test.csv"));
 			List<String[]> result = ReadCSVTable.readCSVTable(input, 3);
 			for (String[] values : result) {
 				for (int i = 0; i < values.length; i++)

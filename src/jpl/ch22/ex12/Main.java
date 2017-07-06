@@ -10,7 +10,7 @@ public class Main {
 		Scanner in = new Scanner(reader);
 		AttributedImpl attrs = new AttributedImpl();
 
-		String pattern = "~(\\w+)=(\\w+)$";
+		String pattern = "^(.*)\\=(.*)";
 
 		while (in.hasNextLine()) {
 			String line = in.nextLine();
@@ -30,17 +30,14 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("aaa");
 		try {
 			AttributedImpl attrs = readAttr(new FileReader(".\\src\\jpl\\ch22\\ex12\\test.txt"));
 
 			for (Attr attr : attrs) {
-				
 				System.out.println(attr);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("aaa");
 	}
 }

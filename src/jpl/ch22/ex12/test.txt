@@ -1,2 +1,2 @@
-aizawa=1
-murase=2
+aizawa=123
+murase=123

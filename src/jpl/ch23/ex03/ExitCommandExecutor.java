@@ -7,26 +7,9 @@ import java.io.InputStreamReader;
 
 public class ExitCommandExecutor {
 
-	public static void main(String[] args) {
-		InputStreamReader isr = new InputStreamReader(System.in);
-		BufferedReader br = new BufferedReader(isr);
-		try {
-			while (true) {
-				Process proc = exec(br.readLine());
-				proc.waitFor();
-			}
-		} catch (InterruptedException | IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static Process exec(String cmd) throws IOException {
-		String str = "exit";
-
-			if (str.equals(cmd)) {
-				System.out.println("Finish");
-				System.exit(0);
-			}
+	public static Process cmdExec(String[] cmd) throws IOException {
+		String str = ".exe";
+		String pattern = ".*" + str + ".*";
 
 		Process proc = Runtime.getRuntime().exec(cmd);
 		InputStream is = proc.getInputStream();
@@ -37,9 +20,24 @@ public class ExitCommandExecutor {
 		int count = 1;
 		while ((line = br.readLine()) != null) {
 			System.out.println(count++ + ": " + line);
+			if (line.matches(pattern)) {
+				System.out.println("Finish");
+				proc.destroy();
+				break;
+			}
 		}
 		return proc;
 	}
 
+	public static void main(String[] args) {
+		try {
+
+			Process proc = cmdExec(args);
+			proc.waitFor();
+
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

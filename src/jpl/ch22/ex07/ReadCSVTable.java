@@ -10,14 +10,14 @@ import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 public class ReadCSVTable {
-	static String Path = "";
 
-	public static List<String[]> readCSVTable(Readable source, int Num) throws IOException {
-		Scanner in = new Scanner(source);
+	public static List<String[]> readCSVTable(Readable reader, int Num) throws IOException {
+		Scanner in = new Scanner(reader);
 		List<String[]> vals = new ArrayList<String[]>();
-		String exp = "~(.*)";
+		String exp = "^(.*)";
 		for (int i = 1; i < Num; i++)
 			exp += ",(.*)";
+		exp += "$";
 		try {
 			Pattern pattern = Pattern.compile(exp, Pattern.MULTILINE);
 			while (in.hasNextLine()) {
@@ -30,7 +30,7 @@ public class ReadCSVTable {
 					vals.add(cells);
 					in.nextLine();
 				} else {
-					throw new IOException("input format error");
+					throw new IOException("不正な入力です");
 				}
 			}
 			IOException ex = in.ioException();
@@ -43,10 +43,10 @@ public class ReadCSVTable {
 	}
 
 	public static void main(String[] args) {
-		BufferedReader input = null;
+		BufferedReader in = null;
 		try {
-			input = new BufferedReader(new FileReader(Path));
-			List<String[]> result = ReadCSVTable.readCSVTable(input, 3);
+			in = new BufferedReader(new FileReader(".\\src\\jpl\\ch22\\ex07\\test.csv"));
+			List<String[]> result = ReadCSVTable.readCSVTable(in, 3);
 			for (String[] values : result) {
 				for (int i = 0; i < values.length; i++)
 					System.out.print(values[i] + "\t");
@@ -55,9 +55,9 @@ public class ReadCSVTable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (input != null) {
+			if (in != null) {
 				try {
-					input.close();
+					in.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
