@@ -305,81 +305,81 @@ public class AizawaInterpretGUI extends Frame implements ActionListener {
 
 	public void clearInputAreaForMakingInstance() {
 		startButton.setEnabled(true);
-		resetButton.setEnabled(false);
-		classInputText.setEnabled(false);
+		resetButton.setEnabled(true);
+		classInputText.setEnabled(true);
 		classInputText.setText("");
-		classInputButton.setEnabled(false);
-		constructorChoice.setEnabled(false);
+		classInputButton.setEnabled(true);
+		constructorChoice.setEnabled(true);
 		constructorChoice.removeAll();
-		selectConstructorButton.setEnabled(false);
-		argumentInputText.setEnabled(false);
+		selectConstructorButton.setEnabled(true);
+		argumentInputText.setEnabled(true);
 		argumentInputText.setText("");
-		argumentInputButton.setEnabled(false);
+		argumentInputButton.setEnabled(true);
 		selectInstanceButton.setEnabled(true);
 
-		setNewValueToInstanceButton.setEnabled(false);
-		doInstanceMethodButton.setEnabled(false);
-		inputValueToInstance.setEnabled(false);
-		inputValueForMethod.setEnabled(false);
+		setNewValueToInstanceButton.setEnabled(true);
+		doInstanceMethodButton.setEnabled(true);
+		inputValueToInstance.setEnabled(true);
+		inputValueForMethod.setEnabled(true);
 
 	}
 
 	private void inputClassName() {
-		startButton.setEnabled(false);
+		startButton.setEnabled(true);
 		resetButton.setEnabled(true);
 		classInputText.setEnabled(true);
 		classInputButton.setEnabled(true);
-		constructorChoice.setEnabled(false);
-		selectConstructorButton.setEnabled(false);
-		argumentInputText.setEnabled(false);
-		argumentInputButton.setEnabled(false);
-		selectInstanceButton.setEnabled(false);
-		setNewValueToInstanceButton.setEnabled(false);
-		doInstanceMethodButton.setEnabled(false);
-		inputValueToInstance.setEnabled(false);
-		inputValueForMethod.setEnabled(false);
+		constructorChoice.setEnabled(true);
+		selectConstructorButton.setEnabled(true);
+		argumentInputText.setEnabled(true);
+		argumentInputButton.setEnabled(true);
+		selectInstanceButton.setEnabled(true);
+		setNewValueToInstanceButton.setEnabled(true);
+		doInstanceMethodButton.setEnabled(true);
+		inputValueToInstance.setEnabled(true);
+		inputValueForMethod.setEnabled(true);
 
 	}
 
 	private void selectConstructors() {
-		startButton.setEnabled(false);
+		startButton.setEnabled(true);
 		resetButton.setEnabled(true);
-		classInputText.setEnabled(false);
-		classInputButton.setEnabled(false);
+		classInputText.setEnabled(true);
+		classInputButton.setEnabled(true);
 		constructorChoice.setEnabled(true);
 		selectConstructorButton.setEnabled(true);
-		argumentInputText.setEnabled(false);
-		argumentInputButton.setEnabled(false);
-		selectInstanceButton.setEnabled(false);
-		setNewValueToInstanceButton.setEnabled(false);
-		doInstanceMethodButton.setEnabled(false);
-		inputValueToInstance.setEnabled(false);
-		inputValueForMethod.setEnabled(false);
+		argumentInputText.setEnabled(true);
+		argumentInputButton.setEnabled(true);
+		selectInstanceButton.setEnabled(true);
+		setNewValueToInstanceButton.setEnabled(true);
+		doInstanceMethodButton.setEnabled(true);
+		inputValueToInstance.setEnabled(true);
+		inputValueForMethod.setEnabled(true);
 
 	}
 
 	private void inputArgument() {
-		startButton.setEnabled(false);
+		startButton.setEnabled(true);
 		resetButton.setEnabled(true);
-		classInputText.setEnabled(false);
-		classInputButton.setEnabled(false);
-		constructorChoice.setEnabled(false);
-		selectConstructorButton.setEnabled(false);
+		classInputText.setEnabled(true);
+		classInputButton.setEnabled(true);
+		constructorChoice.setEnabled(true);
+		selectConstructorButton.setEnabled(true);
 		argumentInputText.setEnabled(true);
 		argumentInputButton.setEnabled(true);
-		selectInstanceButton.setEnabled(false);
-		setNewValueToInstanceButton.setEnabled(false);
-		doInstanceMethodButton.setEnabled(false);
+		selectInstanceButton.setEnabled(true);
+		setNewValueToInstanceButton.setEnabled(true);
+		doInstanceMethodButton.setEnabled(true);
 
 	}
 
 	private void setNewValueOrInvokeMethod() {
-		startButton.setEnabled(false);
+		startButton.setEnabled(true);
 		resetButton.setEnabled(true);
-		classInputText.setEnabled(false);
-		classInputButton.setEnabled(false);
-		constructorChoice.setEnabled(false);
-		selectConstructorButton.setEnabled(false);
+		classInputText.setEnabled(true);
+		classInputButton.setEnabled(true);
+		constructorChoice.setEnabled(true);
+		selectConstructorButton.setEnabled(true);
 		argumentInputText.setEnabled(true);
 		argumentInputButton.setEnabled(true);
 		selectInstanceButton.setEnabled(true);
