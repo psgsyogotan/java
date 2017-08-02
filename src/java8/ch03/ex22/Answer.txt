@@ -1,0 +1,1 @@
+thenCompose(Function<T,CompletableFuture<U>>)メソッド
