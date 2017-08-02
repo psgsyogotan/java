@@ -1,0 +1,11 @@
+java.nio.file.DirectoryStream.Filter<T>
+javax.xml.stream.EventFilter
+java.io.FileFilter
+java.io.FilenameFilter
+java.util.logging.Filter
+javax.management.NotificationFilter
+javax.imageio.spi.ServiceRegistry.Filter
+javax.xml.stream.StreamFilter
+
+そのうちのどれが、Predicate<T>よりも付加価値がありますか？
+DirectoryStream.Filter<T>は例外をスローできる（付加価値ってこういうことでいいんですかね？）
