@@ -19,5 +19,6 @@ public class DoInParallelAsync {
 		new Thread(handle(first, handler)).start();
 		new Thread(handle(second, handler)).start();
 	}
+	
 
 }

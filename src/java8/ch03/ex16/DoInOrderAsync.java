@@ -18,4 +18,8 @@ public class DoInOrderAsync {
 	        }
 	    ).start();
 	}
+	
+	public static void main(String[] args){
+		doInOrderAsync(() -> "hoge",(s,e) ->System.out.println("consumer: "+s) );
+	}
 }

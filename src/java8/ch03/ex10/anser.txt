@@ -1,2 +1,1 @@
-composeの戻り値の型Function<T,T>であるのに対し、
-tranformの引数の型はUnaryOperation<T>であるため
+教えてください柴田さん
