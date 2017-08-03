@@ -23,7 +23,6 @@ public class InfinityStream {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		InfinityStream rand = new InfinityStream(1,25214903917L,11,1 << 48);
 		rand.makeStream().limit(5).forEach(System.out::println);
 	}
