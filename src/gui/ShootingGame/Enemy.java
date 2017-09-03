@@ -1,4 +1,4 @@
-package gui.ex09;
+package gui.ShootingGame;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-public class Alien {
+public class Enemy {
 	private static final int MOVE_WIDTH = 210;
 	private static final Point TOMB = new Point(-50, -50);
 
@@ -22,12 +22,11 @@ public class Alien {
 	private int left;
 	private int right;
 
-	// エイリアンが生きてるかどうか
 	private boolean isAlive;
 
 	private MainPanel panel;
 
-	public Alien(int x, int y, int speed, MainPanel panel) {
+	public Enemy(int x, int y, int speed, MainPanel panel) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
@@ -51,7 +50,7 @@ public class Alien {
 		}
 	}
 
-	public boolean collideWith(Shot shot) {
+	public boolean collideWith(Bullet shot) {
 		Rectangle rectAlien = new Rectangle(x, y, width, height);
 		Point pos = shot.getPos();
 		Rectangle rectShot = new Rectangle(pos.x, pos.y, shot.getWidth(), shot.getHeight());

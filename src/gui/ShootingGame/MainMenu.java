@@ -1,30 +1,34 @@
-package gui.ex09;
+package gui.ShootingGame;
 
 import java.awt.Button;
 import java.awt.Choice;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Label;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
-
 public class MainMenu extends Frame {
+	private final int CLOCKSNUM = 7;
 
 	Image mainPic;
 	private int level;
 	Choice choice;
+	Choice character;
+	Label label;
 
 	public MainMenu() {
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		mainPic = tk.getImage("C:\\Users\\Syogo\\git\\java\\src\\gui\\ex09\\Zaku.jpg");
+		mainPic = tk.getImage("C:\\Users\\Syogo\\git\\java\\src\\gui\\ShootingGame\\Zaku.jpg");
 		addWindowListener(new MyWindowAdapter());
 		setSize(320, 500);
 		setVisible(true);
 		setResizable(false);
 		choice = new Choice();
+		character = new Choice();
 		setLayout(null);
 	}
 
@@ -34,36 +38,47 @@ public class MainMenu extends Frame {
 
 	private void showList(int level) {
 		for (int i = 0; i <= level; i++) {
-			choice.add("時計" + (i + 1));
+			choice.add("難易度" + (i + 1));
 		}
 		choice.setBounds(50, 260, 220, 40);
 
 		this.add(choice);
 	}
 
-	public void intMainMenu(int level) {
+	private void showCharacter() {
 
-		Button showClockButton = new Button("時計を表示");
-		showClockButton.setBounds(120, 300, 80, 40);
-		this.add(showClockButton);
+		Font f = new Font("Arial", Font.BOLD, 14);
+		label = new Label("キャラクター選択");
+		label.setBounds(90, 320, 220, 40);
+		label.setFont(f);
+		this.add(label);
 
-		showList(level);
+		character.add("村瀬慶和");
+		character.add("手島史博");
+		character.add("井上優希");
+		character.add("柴田さん");
+		character.setBounds(50, 360, 220, 40);
+		this.add(character);
+	}
+
+	public void intMainMenu() {
+
+		showList(CLOCKSNUM);
+		showCharacter();
 
 		Button showStartButton = new Button("ゲーム開始");
 		showStartButton.setBounds(120, 400, 80, 40);
 		this.add(showStartButton);
 
-		showClockButton.addActionListener((e -> new Clocks(choice.getSelectedItem()).show()));
 		showStartButton.addActionListener((e -> {
-			Invader frame = new Invader();
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			Game frame = new Game((choice.getSelectedIndex() + 1), character.getSelectedIndex());
 			frame.setVisible(true);
 		}));
 	}
 
 	public static void main(String[] args) {
 		MainMenu mainMenu = new MainMenu();
-		mainMenu.intMainMenu(7);
+		mainMenu.intMainMenu();
 
 	}
 

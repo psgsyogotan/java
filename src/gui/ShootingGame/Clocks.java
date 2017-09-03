@@ -1,4 +1,4 @@
-package gui.ex09;
+package gui.ShootingGame;
 
 import gui.ex01.DegitalClock;
 import gui.ex05.DegitalClockBySwing;
@@ -8,6 +8,10 @@ public class Clocks {
 
 	public Clocks(String clockName) {
 		this.clockName = clockName;
+	}
+
+	public Clocks(int level) {
+		this.clockName = changeClockString(level);
 	}
 
 	public void show() {
@@ -32,8 +36,7 @@ public class Clocks {
 			th.start();
 
 		} else if (clockName.equals("時計5")) {
-			 new DegitalClockBySwing();
-
+			new DegitalClockBySwing();
 
 		} else if (clockName.equals("時計6")) {
 			gui.ex06.DegitalClock dc = new gui.ex06.DegitalClock();
@@ -51,6 +54,34 @@ public class Clocks {
 			th.start();
 
 		}
+	}
+
+	private String changeClockString(int level) {
+		if (level == 1) {
+			return "時計1";
+		}
+		if (level == 2) {
+			return "時計2";
+		}
+		if (level == 3) {
+			return "時計3";
+		}
+		if (level == 4) {
+			return "時計4";
+		}
+		if (level == 5) {
+			return "時計5";
+		}
+		if (level == 6) {
+			return "時計6";
+		}
+		if (level == 7) {
+			return "時計7";
+		}
+		if (level == 8) {
+			return "時計8";
+		}
+		return clockName;
 	}
 
 }

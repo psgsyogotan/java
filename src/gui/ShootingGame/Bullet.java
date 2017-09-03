@@ -1,4 +1,4 @@
-package gui.ex09;
+package gui.ShootingGame;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,8 +6,9 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
-public class Beam {
-	private static final int SPEED = 5;
+public class Bullet {
+	// 弾のスピード
+	public int SPEED;
 	private static final Point STORAGE = new Point(-20, -20);
 
 	private int x;
@@ -18,10 +19,11 @@ public class Beam {
 
 	private MainPanel panel;
 
-	public Beam(MainPanel panel) {
+	public Bullet(MainPanel panel, int bulletSpeed) {
 		x = STORAGE.x;
 		y = STORAGE.y;
 		this.panel = panel;
+		this.SPEED = bulletSpeed;
 
 		loadImage();
 	}
@@ -30,8 +32,8 @@ public class Beam {
 		if (isInStorage())
 			return;
 
-		y += SPEED;
-		if (y > MainPanel.HEIGHT) {
+		y -= SPEED;
+		if (y < 0) {
 			store();
 		}
 	}
@@ -65,14 +67,17 @@ public class Beam {
 	}
 
 	public void draw(Graphics g) {
+		// 弾を描画する
 		g.drawImage(image, x, y, null);
 	}
 
 	private void loadImage() {
-		ImageIcon icon = new ImageIcon(getClass().getResource("beam.gif"));
+		ImageIcon icon = new ImageIcon(getClass().getResource("bullet.png"));
 		image = icon.getImage();
 
+		// 幅と高さをセット
 		width = image.getWidth(panel);
 		height = image.getHeight(panel);
 	}
+
 }
