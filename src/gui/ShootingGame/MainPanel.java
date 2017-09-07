@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 public class MainPanel extends JPanel implements Runnable, KeyListener {
 	// パネルサイズ
-	public static final int WIDTH = 640;
+	public static final int WIDTH = 600;
 	public static final int HEIGHT = 480;
 
 	private static final int LEFT = 0;
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
 		enemy = new Enemy[NUM_ALIEN];
 		for (int i = 0; i < NUM_ALIEN; i++) {
-			enemy[i] = new Enemy(20 + (i % 10) * 40, 20 + (i / 10) * 40, 3, this);
+			enemy[i] = new Enemy(20 + (i % 10) * 50, 20 + (i / 10) * 40, 3, this);
 		}
 
 		beams = new Beam[NUM_BEAM];

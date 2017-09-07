@@ -22,7 +22,7 @@ public class MainMenu extends Frame {
 
 	public MainMenu() {
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		mainPic = tk.getImage("C:\\Users\\Syogo\\git\\java\\src\\gui\\ShootingGame\\Zaku.jpg");
+		mainPic = tk.getImage(".\\src\\gui\\ShootingGame\\Java_logo.png");
 		addWindowListener(new MyWindowAdapter());
 		setSize(320, 500);
 		setVisible(true);
